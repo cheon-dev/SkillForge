@@ -1,0 +1,7 @@
+{
+  "name": "SkillForge",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react-vite"
+}
