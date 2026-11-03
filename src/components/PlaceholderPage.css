@@ -1,0 +1,26 @@
+.placeholder-page__content {
+  max-width: 42rem;
+  margin: 0 auto;
+  padding: 0.75rem 1rem calc(2rem + env(safe-area-inset-bottom));
+}
+
+.placeholder-page__eyebrow {
+  margin: 0 0 0.75rem;
+  color: var(--ion-color-primary);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+.placeholder-page h1 {
+  margin: 0;
+  font-size: clamp(1.55rem, 6vw, 2.25rem);
+}
+
+.placeholder-page__description {
+  max-width: 34rem;
+  margin: 0.75rem 0 1.25rem;
+  color: var(--ion-color-medium);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}

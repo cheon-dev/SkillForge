@@ -1,0 +1,50 @@
+.settings-page__content {
+  width: min(100%, 52rem);
+  min-width: 0;
+  margin: 0 auto;
+  padding: 1.4rem 1rem 3rem;
+}
+
+.settings-page__intro {
+  margin-bottom: 1.25rem;
+}
+
+.settings-page__intro h1 {
+  margin: 0;
+  font-size: clamp(2rem, 8vw, 3rem);
+  font-weight: 780;
+  letter-spacing: -0.055em;
+}
+
+.settings-page__intro > p:last-child {
+  margin: 0.7rem 0 0;
+  color: var(--ion-color-medium);
+  line-height: 1.55;
+}
+
+.settings-page__theme-control {
+  --background: var(--sf-surface-muted);
+  --border-radius: 1rem;
+  --inner-padding-end: 0.8rem;
+  margin: 0;
+  padding: 0.35rem 0.3rem;
+  border-radius: 1rem;
+}
+
+.settings-page__theme-control h2 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.settings-page__theme-control p {
+  margin: 0.3rem 0 0;
+  color: var(--ion-color-medium);
+  font-size: 0.88rem;
+}
+
+@media (max-width: 30rem) {
+  .settings-page__content {
+    padding-inline: 0.75rem;
+  }
+}

@@ -1,0 +1,121 @@
+.home-page__content {
+  max-width: 52rem;
+  margin: 0 auto;
+  padding: 0.55rem 0 calc(1.75rem + env(safe-area-inset-bottom));
+}
+
+.home-page__hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  margin: 0.55rem 1rem 1.15rem;
+  padding: 1.4rem 1.2rem 1.2rem;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 1.7rem;
+  background:
+    radial-gradient(circle at 93% 5%, rgba(140, 155, 255, 0.42), transparent 34%),
+    linear-gradient(140deg, #292e74 0%, #4f49dd 57%, #7065ef 100%);
+  box-shadow: 0 16px 32px rgba(65, 63, 180, 0.2);
+  color: #fff;
+}
+
+.home-page__eyebrow {
+  margin: 0 0 0.75rem;
+  color: #c9ccff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+}
+
+.home-page__hero h1 {
+  margin: 0;
+  max-width: 16ch;
+  font-size: clamp(1.65rem, 7vw, 2.55rem);
+  font-weight: 780;
+  letter-spacing: -0.06em;
+  line-height: 1.02;
+}
+
+.home-page__hero p:not(.home-page__eyebrow) {
+  max-width: 34rem;
+  margin: 0.8rem 0 1.15rem;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 1rem;
+  line-height: 1.55;
+}
+
+.home-page__hero ion-button {
+  --background: #fff;
+  --background-activated: #f0efff;
+  --color: #413bc5;
+  --border-radius: 0.95rem;
+  min-height: 3rem;
+}
+
+.home-page__arena {
+  margin: 0 1rem 0.5rem;
+  padding: 1.15rem 1.1rem 1rem;
+  border: 1px solid rgba(79, 73, 221, 0.16);
+  border-radius: 1.35rem;
+  background:
+    radial-gradient(circle at 100% 0%, rgba(112, 101, 239, 0.14), transparent 45%),
+    var(--ion-card-background, #fff);
+  box-shadow: 0 8px 22px rgba(65, 63, 180, 0.08);
+}
+
+.home-page__arena h2 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 780;
+  letter-spacing: -0.03em;
+}
+
+.home-page__arena > div > p:last-child {
+  margin: 0.4rem 0 0.9rem;
+  color: var(--ion-color-medium);
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+
+.home-page__arena .home-page__eyebrow {
+  margin-bottom: 0.35rem;
+  color: var(--ion-color-primary);
+}
+
+.home-page__arena ion-button {
+  --border-radius: 0.9rem;
+  min-height: 2.9rem;
+}
+
+.home-page ion-list {
+  margin-top: 1rem;
+}
+
+.home-page ion-list ion-item {
+  --min-height: 4.5rem;
+  --padding-start: 1rem;
+  --inner-padding-end: 1rem;
+}
+
+.home-page ion-list ion-item h2 {
+  font-size: 0.98rem;
+  font-weight: 700;
+}
+
+.home-page ion-list ion-item p {
+  margin-top: 0.25rem;
+  color: var(--ion-color-medium);
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+
+@media (min-width: 40rem) {
+  .home-page__content {
+    padding-top: 1.25rem;
+  }
+
+  .home-page__hero {
+    margin-top: 1rem;
+    padding: 2.5rem 2.25rem 2rem;
+  }
+}

@@ -1,0 +1,36 @@
+.admin-page__tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0.5rem 0 1.25rem;
+}
+
+.admin-page__row {
+  display: grid;
+  gap: 0.4rem;
+  justify-items: start;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--sf-border);
+}
+
+.admin-page__row h2 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.admin-page__row p {
+  margin: 0;
+}
+
+.admin-page__row-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.admin-page__row-actions ion-select {
+  max-width: 12rem;
+}

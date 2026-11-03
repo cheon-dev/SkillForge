@@ -1,0 +1,122 @@
+.notifications-page__content {
+  width: min(100%, 48rem);
+  margin: 0 auto;
+  padding: 1.4rem 1rem 3rem;
+}
+
+.notifications-page__intro {
+  margin: 0 0 1.25rem;
+}
+
+.notifications-page__eyebrow {
+  margin: 0 0 0.65rem;
+  color: var(--ion-color-primary);
+  font-size: 0.75rem;
+  font-weight: 750;
+  letter-spacing: 0.12em;
+}
+
+.notifications-page__intro h1 {
+  margin: 0;
+  font-size: clamp(1.8rem, 7vw, 2.35rem);
+  letter-spacing: -0.045em;
+}
+
+.notifications-page__intro > p:last-child {
+  margin: 0.65rem 0 0;
+  color: var(--ion-color-medium);
+  line-height: 1.5;
+}
+
+.notifications-page__list {
+  margin: 1rem 0 0;
+  border-radius: 1rem;
+  background: var(--sf-surface);
+}
+
+.notifications-page__item {
+  --background: var(--sf-surface);
+  --padding-start: 1rem;
+  --inner-padding-end: 0.75rem;
+  --min-height: 5.25rem;
+}
+
+.notifications-page__item--unread {
+  --background: var(--sf-surface-muted);
+}
+
+.notifications-page__item h2 {
+  margin: 0 0 0.3rem;
+  color: var(--ion-text-color);
+  font-size: 0.98rem;
+  font-weight: 730;
+}
+
+.notifications-page__item p {
+  margin: 0;
+  color: var(--ion-color-medium);
+  line-height: 1.45;
+  white-space: normal;
+}
+
+.notifications-page__item .notifications-page__date {
+  margin-top: 0.45rem;
+  font-size: 0.76rem;
+}
+
+.notifications-page__indicator {
+  width: 0.55rem;
+  height: 0.55rem;
+  margin-inline-end: 0.85rem;
+  border-radius: 50%;
+  background: transparent;
+}
+
+.notifications-page__item--unread .notifications-page__indicator {
+  background: var(--ion-color-primary);
+}
+
+.notifications-page__empty,
+.notifications-page__state {
+  display: grid;
+  justify-items: center;
+  gap: 0.55rem;
+  margin-top: 1rem;
+  padding: 2.5rem 1.25rem;
+  border: 1px solid var(--sf-soft-border);
+  border-radius: 1.2rem;
+  background: var(--sf-surface);
+  text-align: center;
+}
+
+.notifications-page__empty ion-icon {
+  color: var(--ion-color-medium);
+  font-size: 1.8rem;
+}
+
+.notifications-page__empty h2 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.notifications-page__empty p {
+  max-width: 23rem;
+  margin: 0;
+  color: var(--ion-color-medium);
+  line-height: 1.5;
+}
+
+.notifications-page__state {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.notifications-page__error {
+  margin: 1rem 0 0;
+  padding: 0.85rem 1rem;
+  border-radius: 0.8rem;
+  background: color-mix(in srgb, var(--ion-color-danger) 14%, var(--sf-surface));
+  color: var(--ion-color-danger-shade);
+  overflow-wrap: anywhere;
+}
