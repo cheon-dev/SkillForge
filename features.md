@@ -272,7 +272,7 @@ Examples:
 - Helpful Peer
 - Collaborator
 
-Achievements should be granted according to defined conditions rather than arbitrary client-side actions.
+Each skill also has a “[Skill] Master” badge, earned after passing three different reviewed Skill Challenges for that skill (for example, C# Master). New catalog skills receive a matching badge automatically. Achievements are granted according to verified database conditions, not arbitrary client-side actions.
 
 11. Notifications
 

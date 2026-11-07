@@ -628,8 +628,8 @@ const Admin = () => {
                   <div>
                     <IonCardTitle>Achievements ({achievements.length})</IonCardTitle>
                     <IonCardSubtitle>
-                      The criteria key decides when an achievement is awarded, and each key can only
-                      be used once.
+                      Criteria keys decide when achievements are awarded. Skill Master badges are
+                      generated for each catalog skill and require three distinct passed challenges.
                     </IonCardSubtitle>
                   </div>
                   <IonButton size="small" onClick={() => {
