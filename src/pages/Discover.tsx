@@ -18,6 +18,7 @@ import {
   IonSelect,
   IonSelectOption,
   IonSpinner,
+  IonTextarea,
   IonText,
   IonTitle,
   IonToolbar,
@@ -33,6 +34,7 @@ import {
   getFriendlyStudentError,
   getMyCredits,
   getSkillMatches,
+  reportStudent,
   requestLearningSession,
   startDirectConversation,
   type CreditSummary,
@@ -86,6 +88,11 @@ const Discover = () => {
   const [requestMessage, setRequestMessage] = useState<string | null>(null);
   const [credits, setCredits] = useState<CreditSummary | null>(null);
   const [creditsError, setCreditsError] = useState<string | null>(null);
+  const [reportTarget, setReportTarget] = useState<{ id: string; name: string } | null>(null);
+  const [reportReason, setReportReason] = useState<'harassment' | 'spam' | 'inappropriate_content' | 'impersonation' | 'other'>('other');
+  const [reportDetails, setReportDetails] = useState('');
+  const [reportError, setReportError] = useState<string | null>(null);
+  const [submittingReport, setSubmittingReport] = useState(false);
   const deferredSearch = useDeferredValue(search.trim().toLowerCase());
 
   const refreshCredits = useCallback(async () => {
@@ -232,6 +239,22 @@ const Discover = () => {
       setRequestError(getFriendlyStudentError(requestError, 'We could not send that session request.'));
     } finally {
       setSubmittingRequest(false);
+    }
+  };
+
+  const submitReport = async () => {
+    if (!reportTarget) return;
+    setSubmittingReport(true);
+    setReportError(null);
+    try {
+      await reportStudent(reportTarget.id, reportReason, reportDetails);
+      setRequestMessage(`Your report about ${reportTarget.name} was sent to the moderation team.`);
+      setReportTarget(null);
+      setReportDetails('');
+    } catch (submitError) {
+      setReportError(getFriendlyStudentError(submitError, 'We could not submit your report.'));
+    } finally {
+      setSubmittingReport(false);
     }
   };
 
@@ -466,6 +489,22 @@ const Discover = () => {
                   >
                     {openingChatFor === student.profile.id ? <IonSpinner name="crescent" /> : 'Message'}
                   </IonButton>
+                  <IonButton
+                    size="small"
+                    fill="clear"
+                    color="medium"
+                    onClick={() => {
+                      setReportReason('other');
+                      setReportDetails('');
+                      setReportError(null);
+                      setReportTarget({
+                        id: student.profile.id,
+                        name: student.profile.full_name || 'this student',
+                      });
+                    }}
+                  >
+                    Report student
+                  </IonButton>
                   <div className="discover-page__skill-list">
                     {student.skills.map(({ association, skill }) => (
                       <div className="discover-page__skill" key={association.id}>
@@ -546,6 +585,40 @@ const Discover = () => {
             value={learningObjectives}
             placeholder="Build a small project that uses it."
             onIonInput={(event) => setLearningObjectives(event.detail.value ?? '')}
+          />
+        </IonItem>
+      </FormModal>
+      <FormModal
+        isOpen={reportTarget !== null}
+        title="Report student"
+        subtitle={reportTarget ? `Report ${reportTarget.name} for moderator review.` : undefined}
+        onDismiss={() => setReportTarget(null)}
+        onSubmit={() => void submitReport()}
+        submitting={submittingReport}
+        submitLabel="Send report"
+      >
+        {reportError && <p className="app-modal__error" role="alert">{reportError}</p>}
+        <IonItem className="app-form-field">
+          <IonLabel position="stacked">Reason</IonLabel>
+          <IonSelect
+            fill="outline"
+            value={reportReason}
+            onIonChange={(event) => setReportReason(event.detail.value)}
+          >
+            <IonSelectOption value="harassment">Harassment or bullying</IonSelectOption>
+            <IonSelectOption value="spam">Spam</IonSelectOption>
+            <IonSelectOption value="inappropriate_content">Inappropriate content</IonSelectOption>
+            <IonSelectOption value="impersonation">Impersonation</IonSelectOption>
+            <IonSelectOption value="other">Other</IonSelectOption>
+          </IonSelect>
+        </IonItem>
+        <IonItem className="app-form-field">
+          <IonLabel position="stacked">Details (optional)</IonLabel>
+          <IonTextarea
+            fill="outline"
+            maxlength={1000}
+            value={reportDetails}
+            onIonInput={(event) => setReportDetails(event.detail.value ?? '')}
           />
         </IonItem>
       </FormModal>

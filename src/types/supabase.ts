@@ -39,7 +39,10 @@ export type NotificationType =
   | 'new_message'
   | 'activity_reviewed'
   | 'duel_challenged'
-  | 'duel_completed';
+  | 'duel_completed'
+  | 'session_cancelled'
+  | 'session_reminder'
+  | 'project_activity';
 export type ProfileRole = 'student' | 'moderator' | 'admin';
 export type ChallengeDifficulty = ProficiencyLevel;
 export type CreditTransactionType =
@@ -1145,6 +1148,26 @@ export type Database = {
       get_my_credits: {
         Args: Record<PropertyKey, never>;
         Returns: Json;
+      };
+      submit_student_report: {
+        Args: { p_target_user_id: string; p_reason: string; p_details?: string | null };
+        Returns: string;
+      };
+      admin_list_student_reports: {
+        Args: { p_status?: string };
+        Returns: Json;
+      };
+      admin_resolve_student_report: {
+        Args: { p_report_id: string; p_status: string; p_moderator_note?: string | null };
+        Returns: undefined;
+      };
+      register_push_token: {
+        Args: { p_token: string };
+        Returns: undefined;
+      };
+      unregister_push_token: {
+        Args: { p_token: string };
+        Returns: undefined;
       };
       complete_learning_session: {
         Args: { p_session_id: string };

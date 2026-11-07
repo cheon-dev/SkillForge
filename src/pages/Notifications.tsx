@@ -18,6 +18,7 @@ import {
 } from '@ionic/react';
 import { checkmarkDoneOutline, notificationsOffOutline } from 'ionicons/icons';
 import { useAuth } from '../hooks/useAuth';
+import { disableWebPush, enableWebPush, isWebPushConfigured } from '../services/webPush';
 import {
   getNotifications,
   markAllNotificationsRead,
@@ -33,8 +34,7 @@ const formatNotificationDate = (value: string) => new Intl.DateTimeFormat(undefi
   timeStyle: 'short',
 }).format(new Date(value));
 
-// Notifications used to all open Learning. Projects and messages live
-// elsewhere, so route each kind to the page where the work actually is.
+// Route notifications to the page where participants can act on them.
 const notificationLink = (type: string): string => {
   if (type.startsWith('project_')) return '/tabs/collaboration';
   if (type.startsWith('duel_')) return '/tabs/arena';
@@ -51,6 +51,15 @@ const Notifications = () => {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [pushEnabled, setPushEnabled] = useState(false);
+  const [pushWorking, setPushWorking] = useState(false);
+  const [pushMessage, setPushMessage] = useState<string | null>(null);
+  const [pushError, setPushError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!user) return;
+    setPushEnabled(window.localStorage.getItem(`skillforge.push.enabled.${user.id}`) === 'true');
+  }, [user]);
 
   const loadNotifications = useCallback(async () => {
     if (!user) return;
@@ -103,6 +112,30 @@ const Notifications = () => {
     }
   };
 
+  const handlePushToggle = async () => {
+    if (!user) return;
+    setPushWorking(true);
+    setPushError(null);
+    setPushMessage(null);
+    try {
+      if (pushEnabled) {
+        await disableWebPush();
+        window.localStorage.removeItem(`skillforge.push.enabled.${user.id}`);
+        setPushEnabled(false);
+        setPushMessage('Browser push notifications are disabled.');
+      } else {
+        await enableWebPush();
+        window.localStorage.setItem(`skillforge.push.enabled.${user.id}`, 'true');
+        setPushEnabled(true);
+        setPushMessage('Browser push notifications are enabled on this device.');
+      }
+    } catch (pushActionError) {
+      setPushError(pushActionError instanceof Error ? pushActionError.message : 'Push notification settings could not be changed.');
+    } finally {
+      setPushWorking(false);
+    }
+  };
+
   return (
     <IonPage>
       <IonHeader>
@@ -124,7 +157,21 @@ const Notifications = () => {
           <section className="notifications-page__intro">
             <p className="notifications-page__eyebrow">UPDATES FOR YOU</p>
             <h1>Stay in the loop</h1>
-            <p>Requests and learning activity updates will appear here.</p>
+            <p>Session, challenge, message, and collaboration updates will appear here.</p>
+            <IonButton
+              fill="outline"
+              onClick={() => void handlePushToggle()}
+              disabled={pushWorking || !isWebPushConfigured()}
+            >
+              {pushWorking ? <IonSpinner name="crescent" /> : pushEnabled ? 'Disable browser push' : 'Enable browser push'}
+            </IonButton>
+            {!isWebPushConfigured() && (
+              <p className="notifications-page__date">
+                Browser push is not configured for this deployment. In-app notifications remain available.
+              </p>
+            )}
+            {pushMessage && <p role="status">{pushMessage}</p>}
+            {pushError && <p className="notifications-page__error" role="alert">{pushError}</p>}
           </section>
 
           <IonSegment

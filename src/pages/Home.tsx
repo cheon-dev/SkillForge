@@ -81,6 +81,12 @@ const Home: React.FC = () => {
                 <p>Track skills, challenges, achievements, and projects.</p>
               </IonLabel>
             </IonItem>
+            <IonItem button detail routerLink="/tabs/analytics">
+              <IonLabel>
+                <h2>Learning analytics</h2>
+                <p>See verified progress over time and by skill.</p>
+              </IonLabel>
+            </IonItem>
           </IonList>
 
           <IonList inset>

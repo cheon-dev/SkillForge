@@ -369,7 +369,10 @@ const SkillPassportPage = () => {
       <IonHeader>
         <IonToolbar>
           <IonTitle>Skill Passport</IonTitle>
-          <IonButtons slot="end"><NotificationsButton /></IonButtons>
+          <IonButtons slot="end">
+            <IonButton fill="clear" routerLink="/tabs/analytics">Analytics</IonButton>
+            <NotificationsButton />
+          </IonButtons>
         </IonToolbar>
       </IonHeader>
 

@@ -7,6 +7,7 @@ import AppShell from './layouts/AppShell';
 import Arena from './pages/Arena';
 import Collaboration from './pages/Collaboration';
 import Admin from './pages/Admin';
+import Analytics from './pages/Analytics';
 import Challenges from './pages/Challenges';
 import Discover from './pages/Discover';
 import Endorsements from './pages/Endorsements';
@@ -61,6 +62,7 @@ const ProtectedApplication = () => (
       <Route path="arena" element={<Arena />} />
       <Route path="challenges" element={<Challenges />} />
       <Route path="skill-passport" element={<SkillPassport />} />
+      <Route path="analytics" element={<Analytics />} />
       <Route path="endorsements" element={<Endorsements />} />
       <Route path="collaboration" element={<Collaboration />} />
       <Route path="messages" element={<Messages />} />

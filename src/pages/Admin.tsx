@@ -39,6 +39,7 @@ import {
   deleteAdminChallenge,
   deleteAdminSkill,
   deleteAdminStudent,
+  getAdminStudentReports,
   getAdminStatistics,
   getFriendlyStudentError,
   getSkillCatalog,
@@ -46,7 +47,9 @@ import {
   saveAdminAchievement,
   saveAdminChallenge,
   saveAdminSkill,
+  resolveAdminStudentReport,
   setUserRole,
+  type AdminStudentReport,
   type AdminQuizQuestion,
   type AdminStatistics,
   type AdminStudentRow,
@@ -57,12 +60,13 @@ import type { ProficiencyLevel } from '../types/supabase';
 import FormModal from '../components/FormModal';
 import './Admin.css';
 
-type Tab = 'overview' | 'students' | 'catalog' | 'challenges' | 'achievements' | 'questions';
+type Tab = 'overview' | 'students' | 'reports' | 'catalog' | 'challenges' | 'achievements' | 'questions';
 type AdminModal = 'skill' | 'challenge' | 'achievement' | null;
 
 const tabs: { id: Tab; label: string }[] = [
   { id: 'overview', label: 'Overview' },
   { id: 'students', label: 'Students' },
+  { id: 'reports', label: 'Reports' },
   { id: 'catalog', label: 'Skill catalog' },
   { id: 'challenges', label: 'Challenges' },
   { id: 'achievements', label: 'Achievements' },
@@ -94,6 +98,7 @@ const Admin = () => {
   const [tab, setTab] = useState<Tab>('overview');
   const [stats, setStats] = useState<AdminStatistics | null>(null);
   const [students, setStudents] = useState<AdminStudentRow[]>([]);
+  const [reports, setReports] = useState<AdminStudentReport[]>([]);
   const [query, setQuery] = useState('');
   const [skills, setSkills] = useState<Skill[]>([]);
   const [challenges, setChallenges] = useState<Challenge[]>([]);
@@ -135,14 +140,16 @@ const Admin = () => {
     setLoading(true);
     setError(null);
     try {
-      const [loadedStats, loadedStudents, catalog] = await Promise.all([
+      const [loadedStats, loadedStudents, catalog, loadedReports] = await Promise.all([
         getAdminStatistics(),
         adminListStudents(query),
         getSkillCatalog(),
+        getAdminStudentReports(),
       ]);
       setStats(loadedStats);
       setStudents(loadedStudents);
       setSkills(catalog);
+      setReports(loadedReports);
       const [loadedChallenges, loadedAchievements, loadedQuestions] = await Promise.all([
         getAllChallenges(),
         getAllAchievements(),
@@ -436,6 +443,78 @@ const Admin = () => {
                           }}
                         >
                           Delete
+                        </IonButton>
+                      )}
+                    </div>
+                  </article>
+                ))}
+              </IonCardContent>
+            </IonCard>
+          )}
+
+          {!loading && tab === 'reports' && (
+            <IonCard>
+              <IonCardHeader>
+                <IonCardTitle>Open student reports ({reports.length})</IonCardTitle>
+                <IonCardSubtitle>
+                  Review each report and resolve it or dismiss it. Report details are visible only to moderators.
+                </IonCardSubtitle>
+              </IonCardHeader>
+              <IonCardContent>
+                {reports.length === 0 ? (
+                  <p className="student-page__card-note">There are no open reports.</p>
+                ) : reports.map((report) => (
+                  <article className="admin-page__row" key={report.id}>
+                    <div className="student-page__goal-heading">
+                      <div>
+                        <h2>{report.target_name}</h2>
+                        <p>
+                          Reported by {report.reporter_name} · {report.reason.replaceAll('_', ' ')} ·
+                          {' '}{new Date(report.created_at).toLocaleString()}
+                        </p>
+                      </div>
+                      <IonBadge color="warning">Open</IonBadge>
+                    </div>
+                    {report.details && <p>{report.details}</p>}
+                    <div className="admin-page__row-actions">
+                      <IonButton
+                        size="small"
+                        disabled={saving}
+                        onClick={() => void run(
+                          () => resolveAdminStudentReport(report.id, 'resolved'),
+                          `Report about ${report.target_name} resolved.`,
+                        )}
+                      >
+                        Resolve
+                      </IonButton>
+                      <IonButton
+                        size="small"
+                        fill="outline"
+                        color="medium"
+                        disabled={saving}
+                        onClick={() => void run(
+                          () => resolveAdminStudentReport(report.id, 'dismissed'),
+                          'Report dismissed.',
+                        )}
+                      >
+                        Dismiss
+                      </IonButton>
+                      {isAdmin && report.target_user_id !== user?.id && (
+                        <IonButton
+                          size="small"
+                          fill="clear"
+                          color="danger"
+                          disabled={saving}
+                          onClick={() => {
+                            if (window.confirm(`Permanently delete ${report.target_name}? This cannot be undone.`)) {
+                              void run(
+                                () => deleteAdminStudent(report.target_user_id),
+                                `Deleted ${report.target_name}.`,
+                              );
+                            }
+                          }}
+                        >
+                          Delete account
                         </IonButton>
                       )}
                     </div>

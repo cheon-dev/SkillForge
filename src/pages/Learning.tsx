@@ -25,6 +25,7 @@ import {
 } from '@ionic/react';
 import { useAuth } from '../hooks/useAuth';
 import { addOutline, refreshOutline } from 'ionicons/icons';
+import { getGoogleCalendarUrl } from '../utils/calendar';
 import FormModal from '../components/FormModal';
 import NotificationsButton from '../components/NotificationsButton';
 import SessionLearningPanel from '../components/SessionLearningPanel';
@@ -434,6 +435,21 @@ const Learning = () => {
                       >
                         Open session chat
                       </IonButton>
+                      {['accepted', 'scheduled'].includes(session.status) && (
+                        <IonButton
+                          size="small"
+                          fill="outline"
+                          href={getGoogleCalendarUrl(
+                            session,
+                            skill?.name ?? 'Learning session',
+                            studentNames.get(otherStudentId) ?? 'SkillForge student',
+                          )}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          Add to Google Calendar
+                        </IonButton>
+                      )}
                     </div>
                     {session.learning_objectives && <p>{session.learning_objectives}</p>}
                     {session.proposed_scheduled_at && (

@@ -232,7 +232,11 @@ Students can communicate through:
 
 Chat supports communication during learning sessions and project collaboration.
 
-7. Skill Evidence / Portfolio
+7. Student Reports and Moderation
+
+Students can report another student from Discover with a reason and optional details. Moderators can review open reports and resolve or dismiss them. Admins can permanently delete a reported account where necessary. Report submission and moderation are authorized by database RPCs. The current workflow covers student profiles only; reporting individual messages or other content is not included.
+
+8. Skill Evidence / Portfolio
 
 Students can submit or link evidence of their work, including:
 
@@ -245,7 +249,7 @@ Students can submit or link evidence of their work, including:
 
 Evidence can demonstrate practical skill development and contribute to the student's Skill Passport.
 
-8. Peer Endorsements
+9. Peer Endorsements
 
 After eligible sessions or collaborations, students can:
 
@@ -255,7 +259,7 @@ After eligible sessions or collaborations, students can:
 
 Endorsements should follow the platform's eligibility rules and must not be treated as automatic proof of proficiency.
 
-9. Achievements and Badges
+10. Achievements and Badges
 
 Achievements recognize meaningful learning milestones.
 
@@ -270,7 +274,7 @@ Examples:
 
 Achievements should be granted according to defined conditions rather than arbitrary client-side actions.
 
-10. Notifications
+11. Notifications
 
 The system can notify students about:
 
@@ -286,7 +290,7 @@ The system can notify students about:
 
 Firebase Cloud Messaging supports push notifications. Notifications must correspond to actual application events.
 
-11. Collaboration Rooms
+12. Collaboration Rooms
 
 Students with complementary skills can form teams to work on actual projects.
 
@@ -306,7 +310,7 @@ Features include:
 - Project progress
 - Collaboration history
 
-12. Skill Analytics
+13. Skill Analytics
 
 Students can track:
 
@@ -322,7 +326,7 @@ Students can track:
 
 Analytics should be derived from actual recorded application data.
 
-13. Admin / Moderator
+14. Admin / Moderator
 
 Authorized administrators or moderators can:
 
@@ -331,7 +335,7 @@ Authorized administrators or moderators can:
 - Manage challenges
 - Manage badges and achievements
 - Review reports
-- Moderate users and content
+- Review student reports and moderate user accounts
 - View platform statistics
 
 Administrative actions must follow role-based authorization.
@@ -451,6 +455,12 @@ Purpose:
 
 Notifications must be triggered by valid application events and must respect authentication and user privacy.
 
+The web app uses Firebase Cloud Messaging for opt-in browser push. Configure the `VITE_FIREBASE_*` client variables and `VITE_FIREBASE_VAPID_KEY` in the hosting environment. Deploy the `send-fcm-notification` and `send-session-reminders` Edge Functions. Set `FCM_SERVICE_ACCOUNT` (Firebase service-account JSON), `FCM_WEBHOOK_SECRET`, and `APP_PUBLIC_URL` as Supabase function secrets. Create a database webhook for `notifications` inserts and send the configured secret in the `x-webhook-secret` header. Push tokens are registered through authenticated RPCs and are not directly readable or writable by clients.
+
+Schedule `send-session-reminders` to run hourly with the configured `SESSION_REMINDER_SECRET` in the `x-cron-secret` header. The function creates one in-app reminder per participant about 24 hours before an accepted session; the notifications webhook delivers the corresponding push. Native iOS and Android push are not included in this web deployment.
+
+Vercel builds the Vite app with `npm run build`, serves `dist`, and uses the repository's `vercel.json` rewrite so nested app routes load on refresh. Set the Supabase URL/key and Firebase web client variables in Vercel; keep service-account and webhook/cron secrets in Supabase Function Secrets only.
+
 Integration 2 — Google Calendar
 
 Purpose:
@@ -460,7 +470,7 @@ Purpose:
 - Display session details
 - Manage session date and time
 
-Calendar events should correspond to actual scheduled sessions. Changes or cancellations should be reflected according to the integration's implemented synchronization rules.
+Accepted sessions include an Add to Google Calendar action with the session title, time, duration, peer, and learning objectives prefilled. This is a user-owned calendar event, not an OAuth-linked synchronization: rescheduling or cancelling a session in SkillForge does not update or delete an event already added to Google Calendar.
 
 Optional integrations:
 

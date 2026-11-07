@@ -92,6 +92,12 @@ enabled = true
 # The maximum length in bytes of HTTP request headers. (default: 4096)
 # max_header_length = 4096
 
+[functions.send-fcm-notification]
+verify_jwt = false
+
+[functions.send-session-reminders]
+verify_jwt = false
+
 [studio]
 enabled = true
 # Port to use for Supabase Studio.

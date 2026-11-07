@@ -1001,6 +1001,59 @@ export interface AdminStudentRow {
   total_xp: number;
 }
 
+export interface AdminStudentReport {
+  id: string;
+  reporter_id: string;
+  reporter_name: string;
+  target_user_id: string;
+  target_name: string;
+  reason: 'harassment' | 'spam' | 'inappropriate_content' | 'impersonation' | 'other';
+  details: string | null;
+  status: 'open' | 'resolved' | 'dismissed';
+  moderator_note: string | null;
+  created_at: string;
+  reviewed_at: string | null;
+}
+
+export const reportStudent = async (
+  targetUserId: string,
+  reason: AdminStudentReport['reason'],
+  details: string,
+): Promise<void> => {
+  const { error } = await getSupabaseClient().rpc('submit_student_report', {
+    p_target_user_id: targetUserId,
+    p_reason: reason,
+    p_details: details.trim() || null,
+  });
+  if (error) throw error;
+};
+
+export const getAdminStudentReports = async (
+  status: 'open' | 'resolved' | 'dismissed' | 'all' = 'open',
+): Promise<AdminStudentReport[]> => {
+  const { data, error } = await getSupabaseClient().rpc('admin_list_student_reports', {
+    p_status: status,
+  });
+  if (error) throw error;
+  if (!Array.isArray(data)) {
+    throw new Error('Student reports could not be read.');
+  }
+  return data as unknown as AdminStudentReport[];
+};
+
+export const resolveAdminStudentReport = async (
+  reportId: string,
+  status: 'resolved' | 'dismissed',
+  moderatorNote: string | null = null,
+): Promise<void> => {
+  const { error } = await getSupabaseClient().rpc('admin_resolve_student_report', {
+    p_report_id: reportId,
+    p_status: status,
+    p_moderator_note: moderatorNote,
+  });
+  if (error) throw error;
+};
+
 export const getAdminStatistics = async (): Promise<AdminStatistics> => {
   const { data, error } = await getSupabaseClient().rpc('get_admin_statistics');
   if (error) throw error;
