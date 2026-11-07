@@ -363,6 +363,8 @@ A student learns Python functions.
 
 Skill Challenges should measure practical ability, not simply whether a student attended a session.
 
+The starter library includes three practical challenges at increasing difficulty for each catalog skill. Submissions use the existing moderator review workflow; passing three distinct challenges for a skill unlocks that skill's Master badge.
+
 2. Skill Passport — Main Unique Feature
 
 The Skill Passport is the student's evolving record of skill development.
