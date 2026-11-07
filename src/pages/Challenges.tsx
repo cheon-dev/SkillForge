@@ -29,11 +29,13 @@ import {
   getFriendlyStudentError,
   getMyChallengeSubmissions,
   getReviewableSubmissions,
+  getSkillCatalog,
   getSkillChallenges,
   reviewChallengeSubmission,
   submitChallengeSubmission,
   type ChallengeSubmission,
   type ReviewableSubmission,
+  type Skill,
   type SkillChallengeWithSkill,
 } from '../services/student';
 import './StudentPages.css';
@@ -74,7 +76,9 @@ const formatDate = (value: string | null): string =>
 
 const Challenges = () => {
   const { user } = useAuth();
+  const [skills, setSkills] = useState<Skill[]>([]);
   const [challenges, setChallenges] = useState<SkillChallengeWithSkill[]>([]);
+  const [selectedSkillId, setSelectedSkillId] = useState('all');
   const [submissions, setSubmissions] = useState<ChallengeSubmission[]>([]);
   const [reviewQueue, setReviewQueue] = useState<ReviewableSubmission[]>([]);
   const [loading, setLoading] = useState(true);
@@ -96,12 +100,14 @@ const Challenges = () => {
     setLoading(true);
     setError(null);
     try {
-      const [loadedChallenges, loadedSubmissions, loadedQueue] = await Promise.all([
+      const [loadedChallenges, loadedSkills, loadedSubmissions, loadedQueue] = await Promise.all([
         getSkillChallenges(),
+        getSkillCatalog(),
         getMyChallengeSubmissions(user.id),
         getReviewableSubmissions(),
       ]);
       setChallenges(loadedChallenges);
+      setSkills(loadedSkills);
       setSubmissions(loadedSubmissions);
       setReviewQueue(loadedQueue);
     } catch (loadError) {
@@ -110,6 +116,13 @@ const Challenges = () => {
       setLoading(false);
     }
   }, [user]);
+
+  const filteredChallenges = useMemo(
+    () => selectedSkillId === 'all'
+      ? challenges
+      : challenges.filter((challenge) => challenge.skill_id === selectedSkillId),
+    [challenges, selectedSkillId],
+  );
 
   useEffect(() => {
     void load();
@@ -288,7 +301,30 @@ const Challenges = () => {
             </div>
           )}
 
-          {!loading && challenges.map((challenge) => {
+          {!loading && !error && challenges.length > 0 && (
+            <IonItem className="app-form-field">
+              <IonLabel position="stacked">Filter challenges by skill</IonLabel>
+              <IonSelect
+                fill="outline"
+                value={selectedSkillId}
+                onIonChange={(event) => setSelectedSkillId(event.detail.value ?? 'all')}
+                aria-label="Filter challenges by skill"
+              >
+                <IonSelectOption value="all">All skills</IonSelectOption>
+                {skills.map((skill) => (
+                  <IonSelectOption key={skill.id} value={skill.id}>{skill.name}</IonSelectOption>
+                ))}
+              </IonSelect>
+            </IonItem>
+          )}
+
+          {!loading && !error && challenges.length > 0 && filteredChallenges.length === 0 && (
+            <div className="student-page__empty">
+              <IonText color="medium">No challenges are available for this skill yet.</IonText>
+            </div>
+          )}
+
+          {!loading && !error && filteredChallenges.map((challenge) => {
             const mine = mySubmissionsByChallenge.get(challenge.id);
             const pendingReview = mine?.status === 'submitted';
             const canReview = pendingReview && mine?.student_id !== user?.id;
