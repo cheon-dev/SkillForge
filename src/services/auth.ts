@@ -66,13 +66,22 @@ export const registerUser = async (
 };
 
 export const loginUser = async (email: string, password: string) => {
-  const { data, error } = await getSupabaseClient().auth.signInWithPassword({
+  const client = getSupabaseClient();
+  const { data, error } = await client.auth.signInWithPassword({
     email,
     password,
   });
 
   if (error) {
     throw error;
+  }
+
+  if (data.user && !data.user.email_confirmed_at) {
+    const { error: signOutError } = await client.auth.signOut({ scope: 'local' });
+    if (signOutError) {
+      throw new Error(`Email not confirmed; the unverified session could not be cleared: ${signOutError.message}`);
+    }
+    throw new Error('Email not confirmed');
   }
 
   if (data.user) {
@@ -92,6 +101,10 @@ export const logoutUser = async () => {
 
 export const getFriendlyAuthError = (error: unknown): string => {
   const message = error instanceof Error ? error.message.toLowerCase() : '';
+
+  if (message.includes('unverified session could not be cleared')) {
+    return 'Your email is not confirmed, and this session could not be cleared. Sign out manually, confirm your email, then sign in again.';
+  }
 
   if (message.includes('email not confirmed')) {
     return 'Please confirm your email address before signing in.';
