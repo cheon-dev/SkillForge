@@ -7,7 +7,6 @@ interface FirebaseCompatApp {
 
 interface FirebaseCompatMessaging {
   getToken(options: { vapidKey: string; serviceWorkerRegistration: ServiceWorkerRegistration }): Promise<string>;
-  deleteToken(): Promise<boolean>;
 }
 
 interface FirebaseMessagingFactory {
@@ -125,6 +124,5 @@ export const disableWebPush = async (): Promise<void> => {
   if (token) {
     const { error } = await getSupabaseClient().rpc('unregister_push_token', { p_token: token });
     if (error) throw error;
-    await messaging.deleteToken();
   }
 };
