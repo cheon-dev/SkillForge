@@ -168,7 +168,7 @@ ion-select {
   overflow: visible;
 }
 
-.app-form-field ion-label[position="stacked"] {
+.app-form-field ion-label.label-stacked {
   display: block;
   max-width: 100%;
   margin: 0 0 var(--sf-label-gap);
@@ -231,8 +231,9 @@ form:not(.auth-page__form) {
   margin-block: 0;
 }
 
+/* The form already has a flex gap, so top up to the shared field gap. */
 .auth-page__form .app-form-field {
-  margin-bottom: 0;
+  margin-bottom: calc(var(--sf-field-gap) - 0.85rem);
 }
 
 ion-searchbar {

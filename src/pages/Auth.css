@@ -48,6 +48,8 @@
 }
 
 .auth-page__password-toggle {
+  align-self: flex-end;
+  margin-block: 0;
   margin-inline: 0.25rem 0;
   min-width: 2.75rem;
 }

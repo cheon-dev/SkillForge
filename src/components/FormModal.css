@@ -62,7 +62,7 @@ ion-modal.app-modal .app-modal__footer-bar ion-toolbar {
 }
 
 /* Fields inside a modal reuse the shared form styling. */
-.app-modal__body ion-item.app-form-field ion-label[position="stacked"] {
+.app-modal__body ion-item.app-form-field ion-label.label-stacked {
   font-weight: 650;
   color: var(--sf-text-muted, #78819a);
   letter-spacing: 0.02em;
