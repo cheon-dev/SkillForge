@@ -33,7 +33,7 @@ ion-modal.app-modal .app-modal__content {
 
 .app-modal__body {
   display: grid;
-  gap: 0.15rem;
+  gap: 0;
   padding: 1rem 1.05rem 1.35rem;
 }
 
@@ -62,55 +62,30 @@ ion-modal.app-modal .app-modal__footer-bar ion-toolbar {
 }
 
 /* Fields inside a modal reuse the shared form styling. */
-.app-modal__body ion-item.app-form-field {
-  --padding-start: 0;
-  --padding-end: 0;
-  --inner-padding-end: 0;
-  margin-bottom: 0.85rem;
-}
-
 .app-modal__body ion-item.app-form-field ion-label[position="stacked"] {
-  font-size: 0.78rem;
   font-weight: 650;
   color: var(--sf-text-muted, #78819a);
-  margin-bottom: 0.3rem;
   letter-spacing: 0.02em;
 }
 
 .app-modal__body ion-item.app-form-field ion-input,
 .app-modal__body ion-item.app-form-field ion-textarea,
 .app-modal__body ion-item.app-form-field ion-select {
-  --background: var(--sf-input-background, #f7f8fc);
   --color: var(--ion-text-color, #1b1f34);
   --placeholder-color: var(--sf-text-muted, #78819a);
   --placeholder-opacity: 1;
   --padding-start: 0.85rem;
   --padding-end: 0.85rem;
-  --padding-top: 0.7rem;
-  --padding-bottom: 0.7rem;
-  --border-radius: 0.75rem;
-  --border-color: var(--sf-border, #e8ebf4);
-  --highlight-color-focused: var(--ion-color-primary);
-  border: 1px solid var(--sf-border, #e8ebf4);
-  border-radius: 0.75rem;
   font-size: 0.95rem;
 }
 
-.app-modal__body ion-item.app-form-field ion-input,
-.app-modal__body ion-item.app-form-field ion-textarea {
-  margin-top: 0;
-}
-
-/* The select needs its own height so the text is not clipped. */
 .app-modal__body ion-item.app-form-field ion-select {
   min-height: 2.7rem;
-  padding: 0.55rem 0.85rem;
 }
 
 .app-modal__body ion-item.app-form-toggle {
-  --padding-start: 0;
-  --padding-end: 0;
-  margin-bottom: 0.85rem;
+  --padding-start: 0.9rem;
+  --padding-end: 0.9rem;
 }
 
 .app-modal__body ion-item.app-form-toggle ion-label {

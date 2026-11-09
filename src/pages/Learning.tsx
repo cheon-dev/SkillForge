@@ -580,7 +580,6 @@ const Learning = () => {
         <IonItem className="app-form-field">
           <IonLabel position="stacked">Skill</IonLabel>
           <IonSelect
-            fill="outline"
             value={form.skill_id}
             placeholder="Select a catalog skill"
             onIonChange={(event) => setForm((current) => ({ ...current, skill_id: event.detail.value }))}
@@ -597,7 +596,6 @@ const Learning = () => {
           <IonItem className="app-form-field">
             <IonLabel position="stacked">Current level</IonLabel>
             <IonSelect
-              fill="outline"
               value={form.current_level}
               onIonChange={(event) => setForm((current) => ({ ...current, current_level: event.detail.value }))}
             >
@@ -609,7 +607,6 @@ const Learning = () => {
           <IonItem className="app-form-field">
             <IonLabel position="stacked">Target level</IonLabel>
             <IonSelect
-              fill="outline"
               value={form.target_level}
               onIonChange={(event) => setForm((current) => ({ ...current, target_level: event.detail.value }))}
             >
@@ -621,7 +618,6 @@ const Learning = () => {
           <IonItem className="app-form-field">
             <IonLabel position="stacked">Priority</IonLabel>
             <IonSelect
-              fill="outline"
               value={form.priority}
               onIonChange={(event) => setForm((current) => ({ ...current, priority: event.detail.value }))}
             >
@@ -633,7 +629,6 @@ const Learning = () => {
           <IonItem className="app-form-field">
             <IonLabel position="stacked">Status</IonLabel>
             <IonSelect
-              fill="outline"
               value={form.status}
               onIonChange={(event) => setForm((current) => ({ ...current, status: event.detail.value }))}
             >
@@ -647,7 +642,6 @@ const Learning = () => {
         <IonItem className="app-form-field">
           <IonLabel position="stacked">What do you want to achieve?</IonLabel>
           <IonTextarea
-            fill="outline"
             rows={4}
             autoGrow
             value={form.goal_description ?? ''}
@@ -674,7 +668,6 @@ const Learning = () => {
         <IonItem className="app-form-field">
           <IonLabel position="stacked">Proposed date and time</IonLabel>
           <IonInput
-            fill="outline"
             type="datetime-local"
             min={toLocalDateTimeInput(new Date().toISOString())}
             value={timeDraft}

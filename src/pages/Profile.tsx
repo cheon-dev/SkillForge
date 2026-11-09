@@ -693,7 +693,6 @@ const Profile = () => {
         <IonItem className="app-form-field">
           <IonLabel position="stacked">Full name</IonLabel>
           <IonInput
-            fill="outline"
             value={profileForm.fullName}
             autocomplete="name"
             placeholder="Your full name"
@@ -703,7 +702,6 @@ const Profile = () => {
         <IonItem className="app-form-field">
           <IonLabel position="stacked">Course</IonLabel>
           <IonInput
-            fill="outline"
             value={profileForm.course}
             placeholder="BSIT"
             onIonInput={(event) => setProfileForm((current) => ({ ...current, course: event.detail.value ?? '' }))}
@@ -712,7 +710,6 @@ const Profile = () => {
         <IonItem className="app-form-field">
           <IonLabel position="stacked">Year level</IonLabel>
           <IonInput
-            fill="outline"
             type="number"
             min="1"
             max="8"
@@ -724,7 +721,6 @@ const Profile = () => {
         <IonItem className="app-form-field">
           <IonLabel position="stacked">Bio</IonLabel>
           <IonTextarea
-            fill="outline"
             rows={3}
             autoGrow
             value={profileForm.bio}
@@ -735,7 +731,6 @@ const Profile = () => {
         <IonItem className="app-form-field">
           <IonLabel position="stacked">Photo link</IonLabel>
           <IonInput
-            fill="outline"
             type="url"
             inputmode="url"
             value={profileForm.avatarUrl}
@@ -761,13 +756,12 @@ const Profile = () => {
         {editingSkill ? (
           <IonItem className="app-form-field">
             <IonLabel position="stacked">Skill</IonLabel>
-            <IonInput fill="outline" readonly value={editingSkillName} />
+            <IonInput readonly value={editingSkillName} />
           </IonItem>
         ) : (
           <IonItem className="app-form-field">
             <IonLabel position="stacked">Skill</IonLabel>
             <IonSelect
-              fill="outline"
               value={skillDraft.skillId}
               placeholder="Select a catalog skill"
               onIonChange={(event) => setSkillDraft((current) => ({
@@ -791,7 +785,6 @@ const Profile = () => {
         <IonItem className="app-form-field">
           <IonLabel position="stacked">Proficiency</IonLabel>
           <IonSelect
-            fill="outline"
             value={skillDraft.proficiencyLevel}
             onIonChange={(event) => setSkillDraft((current) => ({
               ...current,
@@ -807,7 +800,6 @@ const Profile = () => {
         <IonItem className="app-form-field">
           <IonLabel position="stacked">Years of experience</IonLabel>
           <IonInput
-            fill="outline"
             type="number"
             min="0"
             max="999.9"
@@ -849,7 +841,6 @@ const Profile = () => {
         <IonItem className="app-form-field">
           <IonLabel position="stacked">Day</IonLabel>
           <IonSelect
-            fill="outline"
             value={slotDraft.day}
             onIonChange={(event) => setSlotDraft((current) => ({
               ...current,
@@ -865,7 +856,6 @@ const Profile = () => {
           <IonItem className="app-form-field">
             <IonLabel position="stacked">From</IonLabel>
             <IonInput
-              fill="outline"
               type="time"
               value={slotDraft.start}
               onIonInput={(event) => setSlotDraft((current) => ({
@@ -877,7 +867,6 @@ const Profile = () => {
           <IonItem className="app-form-field">
             <IonLabel position="stacked">To</IonLabel>
             <IonInput
-              fill="outline"
               type="time"
               value={slotDraft.end}
               onIonInput={(event) => setSlotDraft((current) => ({

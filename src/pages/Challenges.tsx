@@ -305,7 +305,6 @@ const Challenges = () => {
             <IonItem className="app-form-field">
               <IonLabel position="stacked">Filter challenges by skill</IonLabel>
               <IonSelect
-                fill="outline"
                 value={selectedSkillId}
                 onIonChange={(event) => setSelectedSkillId(event.detail.value ?? 'all')}
                 aria-label="Filter challenges by skill"
@@ -398,7 +397,6 @@ const Challenges = () => {
         <IonItem className="app-form-field">
           <IonLabel position="stacked">Your work</IonLabel>
           <IonTextarea
-            fill="outline"
             rows={8}
             autoGrow
             value={submissionText}
@@ -409,7 +407,6 @@ const Challenges = () => {
         <IonItem className="app-form-field">
           <IonLabel position="stacked">Link to your project (optional)</IonLabel>
           <IonInput
-            fill="outline"
             value={submissionUrl}
             placeholder="https://"
             onIonInput={(event) => setSubmissionUrl(event.detail.value ?? '')}
@@ -418,7 +415,6 @@ const Challenges = () => {
         <IonItem className="app-form-field">
           <IonLabel position="stacked">Attachment link (optional)</IonLabel>
           <IonInput
-            fill="outline"
             value={submissionAttachment}
             placeholder="https://"
             onIonInput={(event) => setSubmissionAttachment(event.detail.value ?? '')}
@@ -481,7 +477,6 @@ const Challenges = () => {
         <IonItem className="app-form-field">
           <IonLabel position="stacked">Result</IonLabel>
           <IonSelect
-            fill="outline"
             value={reviewDraft.passed ? 'passed' : 'revision'}
             onIonChange={(event) => setReviewDraft((current) => ({
               ...current,
@@ -496,7 +491,6 @@ const Challenges = () => {
         <IonItem className="app-form-field">
           <IonLabel position="stacked">Feedback</IonLabel>
           <IonTextarea
-            fill="outline"
             autoGrow
             value={reviewDraft.feedback}
             placeholder="What worked, and what to improve."

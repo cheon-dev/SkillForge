@@ -189,7 +189,6 @@ const SelfPaced = () => {
               <IonItem className="app-form-field">
                 <IonLabel position="stacked">Filter learning paths by skill</IonLabel>
                 <IonSelect
-                  fill="outline"
                   value={selectedSkill}
                   onIonChange={(event) => filterCourses(event.detail.value ?? 'all')}
                   aria-label="Filter learning paths by skill"
@@ -270,7 +269,6 @@ const SelfPaced = () => {
                     <IonCardContent>
                       <p>{selectedLesson.question}</p>
                       <IonSelect
-                        fill="outline"
                         placeholder="Choose an answer"
                         value={selectedAnswer === null ? undefined : String(selectedAnswer)}
                         onIonChange={(event) => {

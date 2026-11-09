@@ -559,7 +559,6 @@ const Discover = () => {
         <IonItem className="app-form-field">
           <IonLabel position="stacked">Preferred date and time</IonLabel>
           <IonInput
-            fill="outline"
             type="datetime-local"
             min={toLocalDateTimeInput(new Date())}
             value={scheduledAt}
@@ -569,7 +568,6 @@ const Discover = () => {
         <IonItem className="app-form-field">
           <IonLabel position="stacked">Duration</IonLabel>
           <IonSelect
-            fill="outline"
             value={durationMinutes}
             onIonChange={(event) => setDurationMinutes(String(event.detail.value))}
           >
@@ -581,7 +579,6 @@ const Discover = () => {
         <IonItem className="app-form-field">
           <IonLabel position="stacked">What would you like to learn?</IonLabel>
           <IonInput
-            fill="outline"
             value={learningObjectives}
             placeholder="Build a small project that uses it."
             onIonInput={(event) => setLearningObjectives(event.detail.value ?? '')}
@@ -601,7 +598,6 @@ const Discover = () => {
         <IonItem className="app-form-field">
           <IonLabel position="stacked">Reason</IonLabel>
           <IonSelect
-            fill="outline"
             value={reportReason}
             onIonChange={(event) => setReportReason(event.detail.value)}
           >
@@ -615,7 +611,6 @@ const Discover = () => {
         <IonItem className="app-form-field">
           <IonLabel position="stacked">Details (optional)</IonLabel>
           <IonTextarea
-            fill="outline"
             maxlength={1000}
             value={reportDetails}
             onIonInput={(event) => setReportDetails(event.detail.value ?? '')}

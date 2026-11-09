@@ -138,34 +138,62 @@ ion-select {
   text-align: start;
 }
 
+/*
+ * Shared form field layout.
+ *
+ * Every labelled field is "label on top, box underneath". The label is a normal
+ * block that sits fully above the control, and the control draws its own single
+ * border. We deliberately do NOT use Ionic's built-in `fill="outline"`: it draws
+ * a second outline whose top edge is notched for Ionic's own floating label, so
+ * with a separate IonLabel the border ran straight through the label text.
+ */
+:root {
+  --sf-field-gap: 1.15rem;
+  --sf-label-gap: 0.5rem;
+}
+
 .app-form-field {
   --padding-start: 0;
+  --padding-end: 0;
   --inner-padding-end: 0;
-  --padding-top: 0.2rem;
-  --padding-bottom: 0.2rem;
-  --inner-padding-top: 0.2rem;
-  --inner-padding-bottom: 0.2rem;
+  --padding-top: 0;
+  --padding-bottom: 0;
+  --inner-padding-top: 0;
+  --inner-padding-bottom: 0;
   --background: transparent;
   --border-width: 0;
   --inner-border-width: 0;
   --min-height: auto;
-  margin-block: 0.15rem;
+  margin: 0 0 var(--sf-field-gap);
   overflow: visible;
 }
 
 .app-form-field ion-label[position="stacked"] {
   display: block;
-  margin: 0 0 0.3rem;
+  max-width: 100%;
+  margin: 0 0 var(--sf-label-gap);
+  transform: none;
+  font-size: 0.85rem;
   line-height: 1.35;
+  white-space: normal;
 }
 
 .app-form-field ion-input,
 .app-form-field ion-textarea,
 .app-form-field ion-select {
-  margin-top: 0.15rem;
+  margin: 0;
+  border: 1px solid var(--sf-border);
+  border-radius: 0.85rem;
+  background: var(--sf-input-background);
+}
+
+.app-form-field ion-select {
+  --padding-top: 0.6rem;
+  --padding-bottom: 0.6rem;
 }
 
 .app-form-toggle {
+  margin-bottom: var(--sf-field-gap);
   --padding-start: 0.9rem;
   --inner-padding-end: 0.9rem;
   --min-height: 3rem;
@@ -201,6 +229,10 @@ form:not(.auth-page__form) {
 
 .auth-page__form ion-item {
   margin-block: 0;
+}
+
+.auth-page__form .app-form-field {
+  margin-bottom: 0;
 }
 
 ion-searchbar {
