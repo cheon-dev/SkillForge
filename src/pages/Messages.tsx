@@ -299,6 +299,15 @@ const Messages = () => {
                   detail
                   onClick={() => void openConversation(conversation.conversation_id)}
                 >
+                  <div className="messages-page__conversation-avatars" slot="start" aria-hidden="true">
+                    {conversation.members.slice(0, 3).map((member) => (
+                      <span className="messages-page__conversation-avatar" key={member.id}>
+                        {member.avatar_url
+                          ? <img src={member.avatar_url} alt="" />
+                          : member.name.charAt(0).toUpperCase()}
+                      </span>
+                    ))}
+                  </div>
                   <IonLabel>
                     <h2>{conversationTitle(conversation)}</h2>
                     <p>
@@ -335,7 +344,12 @@ const Messages = () => {
                   key={message.id}
                   className={`messages-page__bubble${message.is_mine ? ' messages-page__bubble--mine' : ''}`}
                 >
-                  {!message.is_mine && <span className="messages-page__sender">{message.sender_name}</span>}
+                  {!message.is_mine && (
+                    <span className="messages-page__sender">
+                      {message.sender_avatar_url && <img src={message.sender_avatar_url} alt="" />}
+                      {message.sender_name}
+                    </span>
+                  )}
                   <p>{message.body}</p>
                   {message.attachment_url && (
                     <a href={message.attachment_url} target="_blank" rel="noreferrer">Shared link</a>

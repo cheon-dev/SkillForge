@@ -70,6 +70,36 @@
   font-size: 1.5rem;
   font-weight: 800;
   box-shadow: 0 7px 18px rgba(81, 72, 229, 0.2);
+  overflow: hidden;
+}
+
+.student-page__avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profile-page__photo-preview {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.profile-page__file-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  clip-path: inset(50%);
+}
+
+.profile-page__upload-note {
+  margin: 0.4rem 0;
+  font-size: 0.85rem;
+  line-height: 1.45;
 }
 
 .student-page ion-card {

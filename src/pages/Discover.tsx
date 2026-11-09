@@ -320,7 +320,9 @@ const Discover = () => {
                     <div className="student-page__goal-heading">
                       <div className="discover-page__identity">
                         <div className="discover-page__avatar" aria-hidden="true">
-                          {getInitials(match.full_name)}
+                          {match.avatar_url
+                            ? <img src={match.avatar_url} alt="" />
+                            : getInitials(match.full_name)}
                         </div>
                         <div>
                           <h3>{match.full_name}</h3>
@@ -469,7 +471,9 @@ const Discover = () => {
                   <div className="discover-page__student-heading">
                     <div className="discover-page__student-identity">
                       <div className="discover-page__avatar" aria-hidden="true">
-                        {getInitials(student.profile.full_name)}
+                        {student.profile.avatar_url
+                          ? <img src={student.profile.avatar_url} alt="" />
+                          : getInitials(student.profile.full_name)}
                       </div>
                       <div>
                         <IonCardTitle>{student.profile.full_name || 'SkillForge student'}</IonCardTitle>

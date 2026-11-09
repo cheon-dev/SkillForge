@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   IonBadge,
   IonButton,
@@ -48,6 +48,7 @@ import {
   type StudentSkill,
 } from '../services/student';
 import type { ProficiencyLevel } from '../types/supabase';
+import { uploadStudentAvatar } from '../services/profileAvatar';
 import '../components/AuthLoading.css';
 import './StudentPages.css';
 
@@ -126,6 +127,8 @@ const Profile = () => {
   const [profileModalOpen, setProfileModalOpen] = useState(false);
   const [profileModalError, setProfileModalError] = useState<string | null>(null);
   const [savingProfile, setSavingProfile] = useState(false);
+  const [avatarFile, setAvatarFile] = useState<File | null>(null);
+  const avatarInputRef = useRef<HTMLInputElement>(null);
 
   const [skillModalOpen, setSkillModalOpen] = useState(false);
   const [editingSkill, setEditingSkill] = useState<StudentSkill | null>(null);
@@ -211,6 +214,7 @@ const Profile = () => {
 
   const openProfileModal = () => {
     setProfileForm(profileToForm(profile, user?.user_metadata?.full_name ?? ''));
+    setAvatarFile(null);
     setProfileModalError(null);
     setProfileModalOpen(true);
   };
@@ -236,15 +240,19 @@ const Profile = () => {
     setSavingProfile(true);
 
     try {
+      const avatarUrl = avatarFile
+        ? await uploadStudentAvatar(user.id, avatarFile)
+        : profileForm.avatarUrl.trim() || null;
       const savedProfile = await saveStudentProfile(user.id, {
         full_name: profileForm.fullName.trim() || null,
         course: profileForm.course.trim() || null,
         year_level: yearLevel,
         bio: profileForm.bio.trim() || null,
-        avatar_url: profileForm.avatarUrl.trim() || null,
+        avatar_url: avatarUrl,
       });
       setProfile(savedProfile);
       setProfileForm(profileToForm(savedProfile, user.user_metadata?.full_name ?? ''));
+      setAvatarFile(null);
       setProfileModalOpen(false);
       setPageMessage({ text: 'Profile saved successfully.', tone: 'success' });
     } catch (saveError) {
@@ -470,7 +478,9 @@ const Profile = () => {
             <p className="student-page__eyebrow">YOUR SKILL PASSPORT</p>
             <div className="student-page__identity">
               <div className="student-page__avatar" aria-hidden="true">
-                {displayName.charAt(0).toUpperCase()}
+                {profile?.avatar_url
+                  ? <img src={profile.avatar_url} alt="" />
+                  : displayName.charAt(0).toUpperCase()}
               </div>
               <div>
                 <h1>{displayName}</h1>
@@ -551,11 +561,7 @@ const Profile = () => {
                 <li>
                   <span>Photo</span>
                   {profile?.avatar_url
-                    ? (
-                      <a href={profile.avatar_url} target="_blank" rel="noreferrer">
-                        View photo
-                      </a>
-                    )
+                    ? <img className="profile-page__photo-preview" src={profile.avatar_url} alt={`${displayName}'s profile`} />
                     : <em>Not set</em>}
                 </li>
               </ul>
@@ -729,6 +735,36 @@ const Profile = () => {
           />
         </IonItem>
         <IonItem className="app-form-field">
+          <IonLabel position="stacked">Profile picture</IonLabel>
+          <input
+            ref={avatarInputRef}
+            className="profile-page__file-input"
+            type="file"
+            accept="image/jpeg,image/png,image/webp"
+            aria-label="Choose profile picture"
+            onChange={(event) => {
+              const file = event.currentTarget.files?.[0] ?? null;
+              setAvatarFile(file);
+              if (file) setProfileModalError(null);
+              event.currentTarget.value = '';
+            }}
+          />
+          <IonButton
+            type="button"
+            fill="outline"
+            slot="end"
+            onClick={() => avatarInputRef.current?.click()}
+          >
+            {avatarFile ? 'Choose a different picture' : 'Choose picture'}
+          </IonButton>
+          <IonText color="medium">
+            <p className="profile-page__upload-note">
+              JPG, PNG, or WebP, up to 5 MB. Other students can see your photo.
+              {avatarFile ? ` Selected: ${avatarFile.name}` : ''}
+            </p>
+          </IonText>
+        </IonItem>
+        <IonItem className="app-form-field">
           <IonLabel position="stacked">Photo link</IonLabel>
           <IonInput
             type="url"
@@ -737,6 +773,9 @@ const Profile = () => {
             placeholder="https://"
             onIonInput={(event) => setProfileForm((current) => ({ ...current, avatarUrl: event.detail.value ?? '' }))}
           />
+          <IonText color="medium">
+            <p className="profile-page__upload-note">An uploaded picture takes priority over this link.</p>
+          </IonText>
         </IonItem>
       </FormModal>
 

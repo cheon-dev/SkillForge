@@ -20,6 +20,7 @@ Each student has a profile containing:
 
 - Name, course, and year level
 - Bio and profile photo
+- Upload a JPG, PNG, or WebP profile photo (up to 5 MB) for display in Discover and conversations
 - Selected skills
 - Current proficiency levels
 - Skills they can teach
@@ -232,6 +233,7 @@ Students can communicate through:
 - Student-to-student chat
 - Session-related conversations
 - Collaboration group chat
+- Participant profile photos in conversation lists and message threads
 - Resource and link sharing
 
 Chat supports communication during learning sessions and project collaboration.

@@ -1235,7 +1235,7 @@ export interface ConversationSummary {
   session_id: string | null;
   project_id: string | null;
   title: string | null;
-  members: { id: string; name: string }[];
+  members: { id: string; name: string; avatar_url: string | null }[];
   last_message_id: string | null;
   last_message_body: string | null;
   last_message_sender_id: string | null;
@@ -1250,6 +1250,7 @@ export interface ChatMessage {
   created_at: string;
   sender_id: string;
   sender_name: string;
+  sender_avatar_url: string | null;
   is_mine: boolean;
   seen_by_peer: boolean;
 }
