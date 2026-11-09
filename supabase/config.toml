@@ -98,6 +98,9 @@ verify_jwt = false
 [functions.send-session-reminders]
 verify_jwt = false
 
+[functions.livekit-call-token]
+verify_jwt = true
+
 [studio]
 enabled = true
 # Port to use for Supabase Studio.

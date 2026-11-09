@@ -1,0 +1,22 @@
+.conversation-video-call-modal {
+  --width: 100%;
+  --height: 100%;
+  --border-radius: 0;
+}
+
+.conversation-video-call {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+  background: #101114;
+}
+
+.conversation-video-call ion-header {
+  flex: 0 0 auto;
+}
+
+.conversation-video-call__conference {
+  min-height: 0;
+  flex: 1 1 auto;
+}

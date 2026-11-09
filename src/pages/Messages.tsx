@@ -19,12 +19,21 @@ import {
   IonTitle,
   IonToolbar,
 } from '@ionic/react';
-import { chevronBackOutline } from 'ionicons/icons';
+import { chevronBackOutline, videocamOutline } from 'ionicons/icons';
 import { useLocation } from 'react-router-dom';
 import type { RealtimeChannel } from '@supabase/supabase-js';
 import NotificationsButton from '../components/NotificationsButton';
+import ConversationVideoCall from '../components/ConversationVideoCall';
 import { useAuth } from '../hooks/useAuth';
 import { toggleMessageReaction } from '../services/messageReactions';
+import {
+  endConversationVideoCall,
+  getActiveVideoCall,
+  getLiveKitCallCredentials,
+  startConversationVideoCall,
+  type ConversationVideoCall as ConversationVideoCallInfo,
+  type LiveKitCallCredentials,
+} from '../services/videoCalls';
 import {
   getConversationMessages,
   getFriendlyStudentError,
@@ -71,6 +80,10 @@ const Messages = () => {
   const openedRef = useRef<string | null>(null);
   const longPressTimerRef = useRef<number | null>(null);
   const [reactionPickerMessageId, setReactionPickerMessageId] = useState<string | null>(null);
+  const [activeVideoCall, setActiveVideoCall] = useState<ConversationVideoCallInfo | null>(null);
+  const [videoCredentials, setVideoCredentials] = useState<LiveKitCallCredentials | null>(null);
+  const [videoCallOpen, setVideoCallOpen] = useState(false);
+  const [videoCallWorking, setVideoCallWorking] = useState(false);
 
   const loadConversations = useCallback(async () => {
     if (!user) return;
@@ -140,6 +153,27 @@ const Messages = () => {
           }
         },
       )
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'conversation_video_calls',
+          filter: `conversation_id=eq.${activeId}`,
+        },
+        async () => {
+          try {
+            const call = await getActiveVideoCall(activeId);
+            setActiveVideoCall(call);
+            if (!call) {
+              setVideoCallOpen(false);
+              setVideoCredentials(null);
+            }
+          } catch {
+            setError('Call status could not be refreshed. Reopen this chat and try again.');
+          }
+        },
+      )
       .on('broadcast', { event: 'typing' }, ({ payload }) => {
         const typed = payload as { typing?: boolean; name?: string } | null;
         if (!typed) return;
@@ -206,6 +240,9 @@ const Messages = () => {
     setDraft('');
     setAttachment('');
     setPeerTyping(null);
+    setActiveVideoCall(null);
+    setVideoCredentials(null);
+    setVideoCallOpen(false);
     setError(null);
   }, []);
 
@@ -216,10 +253,18 @@ const Messages = () => {
 
   const openConversation = useCallback(async (conversationId: string) => {
     setActiveId(conversationId);
+    setActiveVideoCall(null);
+    setVideoCallOpen(false);
+    setVideoCredentials(null);
     setLoadingThread(true);
     setError(null);
     try {
-      setMessages(await getConversationMessages(conversationId));
+      const [conversationMessages, videoCall] = await Promise.all([
+        getConversationMessages(conversationId),
+        getActiveVideoCall(conversationId),
+      ]);
+      setMessages(conversationMessages);
+      setActiveVideoCall(videoCall);
       await markConversationRead(conversationId);
       await loadConversations();
     } catch (loadError) {
@@ -283,6 +328,42 @@ const Messages = () => {
     }
   };
 
+  const handleJoinVideoCall = async () => {
+    if (!activeId || !user) return;
+    setVideoCallWorking(true);
+    setError(null);
+    try {
+      const callId = activeVideoCall?.id ?? await startConversationVideoCall(activeId);
+      const [credentials, call] = await Promise.all([
+        getLiveKitCallCredentials(callId),
+        getActiveVideoCall(activeId),
+      ]);
+      setActiveVideoCall(call);
+      setVideoCredentials(credentials);
+      setVideoCallOpen(true);
+    } catch (callError) {
+      setError(getFriendlyStudentError(callError, 'The video call could not be started.'));
+    } finally {
+      setVideoCallWorking(false);
+    }
+  };
+
+  const handleEndVideoCall = async () => {
+    if (!activeVideoCall) return;
+    setVideoCallWorking(true);
+    setError(null);
+    try {
+      await endConversationVideoCall(activeVideoCall.id);
+      setActiveVideoCall(null);
+      setVideoCallOpen(false);
+      setVideoCredentials(null);
+    } catch (callError) {
+      setError(getFriendlyStudentError(callError, 'The video call could not be ended.'));
+    } finally {
+      setVideoCallWorking(false);
+    }
+  };
+
   useEffect(() => () => {
     if (longPressTimerRef.current !== null) {
       window.clearTimeout(longPressTimerRef.current);
@@ -304,7 +385,21 @@ const Messages = () => {
             </IonButtons>
           )}
           <IonTitle>{active ? conversationTitle(active) : 'Messages'}</IonTitle>
-          <IonButtons slot="end"><NotificationsButton /></IonButtons>
+          <IonButtons slot="end">
+            {active && (
+              <IonButton
+                onClick={() => void handleJoinVideoCall()}
+                disabled={videoCallWorking}
+                aria-label={activeVideoCall ? 'Join active video call' : 'Start video call'}
+              >
+                {videoCallWorking
+                  ? <IonSpinner name="crescent" />
+                  : <IonIcon slot="start" icon={videocamOutline} />}
+                {activeVideoCall ? 'Join call' : 'Video call'}
+              </IonButton>
+            )}
+            <NotificationsButton />
+          </IonButtons>
         </IonToolbar>
       </IonHeader>
 
@@ -378,6 +473,14 @@ const Messages = () => {
 
         {active && (
           <div className="messages-page__thread">
+            {activeVideoCall && (
+              <div className="messages-page__call-banner" role="status">
+                <span>Video call in progress · started {timeLabel(activeVideoCall.started_at)}</span>
+                <IonButton size="small" onClick={() => void handleJoinVideoCall()} disabled={videoCallWorking}>
+                  Join call
+                </IonButton>
+              </div>
+            )}
             {loadingThread && <IonSpinner name="crescent" />}
             {!loadingThread && messages.length === 0 && (
               <div className="student-page__empty">
@@ -506,6 +609,18 @@ const Messages = () => {
           </IonToolbar>
         </IonFooter>
       )}
+      <ConversationVideoCall
+        isOpen={videoCallOpen}
+        credentials={videoCredentials}
+        canEndForEveryone={Boolean(activeVideoCall && user?.id === activeVideoCall.started_by)}
+        ending={videoCallWorking}
+        onClose={() => {
+          setVideoCallOpen(false);
+          setVideoCredentials(null);
+        }}
+        onEndForEveryone={() => void handleEndVideoCall()}
+        onError={(message) => setError(`Video call error: ${message}`)}
+      />
     </IonPage>
   );
 };

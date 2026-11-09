@@ -235,6 +235,7 @@ Students can communicate through:
 - Collaboration group chat
 - Participant profile photos in conversation lists and message threads
 - React to messages with emoji using a long press or the reaction control; each student can choose one reaction per message and change or remove it later
+- Start or join one-to-one and group video calls in a conversation; calls use LiveKit with authenticated, server-issued room tokens
 - Resource and link sharing
 
 Chat supports communication during learning sessions and project collaboration.
@@ -469,6 +470,8 @@ The web app uses Firebase Cloud Messaging for opt-in browser push. Configure the
 Schedule `send-session-reminders` to run hourly with the configured `SESSION_REMINDER_SECRET` in the `x-cron-secret` header. The function creates one in-app reminder per participant about 24 hours before an accepted session; the notifications webhook delivers the corresponding push. Native iOS and Android push are not included in this web deployment.
 
 Vercel builds the Vite app with `npm run build`, serves `dist`, and uses the repository's `vercel.json` rewrite so nested app routes load on refresh. Set the Supabase URL/key and Firebase web client variables in Vercel; keep service-account and webhook/cron secrets in Supabase Function Secrets only. Signup confirmation redirects to the current app origin. Configure the production app URL as the Supabase Auth Site URL and allow it under Auth redirect URLs.
+
+Chat video calls use LiveKit Cloud. Set `LIVEKIT_URL`, `LIVEKIT_API_KEY`, and `LIVEKIT_API_SECRET` as Supabase Function Secrets, then deploy the authenticated `livekit-call-token` Edge Function. The LiveKit API secret is never sent to the browser; the function verifies conversation membership before minting a short-lived room token. Each conversation has one active call at a time, and the student who started it can end it for everyone.
 
 Integration 2 — Google Calendar
 

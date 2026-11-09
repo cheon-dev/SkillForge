@@ -1121,6 +1121,58 @@ export type Database = {
           },
         ];
       };
+      conversation_video_calls: {
+        Row: {
+          id: string;
+          conversation_id: string;
+          room_name: string;
+          started_by: string;
+          started_at: string;
+          ended_at: string | null;
+          ended_by: string | null;
+        };
+        Insert: {
+          id?: string;
+          conversation_id: string;
+          room_name: string;
+          started_by: string;
+          started_at?: string;
+          ended_at?: string | null;
+          ended_by?: string | null;
+        };
+        Update: {
+          id?: string;
+          conversation_id?: string;
+          room_name?: string;
+          started_by?: string;
+          started_at?: string;
+          ended_at?: string | null;
+          ended_by?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'conversation_video_calls_conversation_id_fkey';
+            columns: ['conversation_id'];
+            isOneToOne: false;
+            referencedRelation: 'conversations';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'conversation_video_calls_started_by_fkey';
+            columns: ['started_by'];
+            isOneToOne: false;
+            referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'conversation_video_calls_ended_by_fkey';
+            columns: ['ended_by'];
+            isOneToOne: false;
+            referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
     };
     Views: Record<string, never>;
     Functions: {
@@ -1241,6 +1293,14 @@ export type Database = {
       };
       toggle_message_reaction: {
         Args: { p_message_id: string; p_emoji: string };
+        Returns: undefined;
+      };
+      start_conversation_video_call: {
+        Args: { p_conversation_id: string };
+        Returns: string;
+      };
+      end_conversation_video_call: {
+        Args: { p_call_id: string };
         Returns: undefined;
       };
       get_admin_statistics: {
