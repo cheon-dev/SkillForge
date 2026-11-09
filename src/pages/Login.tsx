@@ -75,7 +75,7 @@ const Login = () => {
           <form className="auth-page__form" onSubmit={handleSubmit} noValidate>
             <IonItem className="app-form-field">
               <IonLabel position="stacked">Email</IonLabel>
-              <IonInput fill="outline"
+              <IonInput
                 type="email"
                 value={email}
                 autocomplete="email"
@@ -84,7 +84,7 @@ const Login = () => {
             </IonItem>
             <IonItem className="app-form-field">
               <IonLabel position="stacked">Password</IonLabel>
-              <IonInput fill="outline"
+              <IonInput
                 type={showPassword ? 'text' : 'password'}
                 value={password}
                 autocomplete="current-password"

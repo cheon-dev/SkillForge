@@ -850,7 +850,6 @@ const Collaboration = () => {
         <IonItem className="app-form-field">
           <IonLabel position="stacked">Project name</IonLabel>
           <IonInput
-            fill="outline"
             value={draft.name}
             placeholder="Campus event tracker"
             onIonInput={(event) => setDraft((current) => ({
@@ -863,7 +862,6 @@ const Collaboration = () => {
           <IonLabel position="stacked">What are you building?</IonLabel>
           <IonTextarea
             autoGrow
-            fill="outline"
             value={draft.description}
             placeholder="A small web app so student orgs can track event tasks."
             onIonInput={(event) => setDraft((current) => ({
@@ -876,7 +874,6 @@ const Collaboration = () => {
           <IonLabel position="stacked">Skills this project needs</IonLabel>
           <IonSelect
             multiple
-            fill="outline"
             value={draft.skillIds}
             onIonChange={(event) => setDraft((current) => ({
               ...current,
@@ -894,7 +891,6 @@ const Collaboration = () => {
           <IonLabel position="stacked">Invite teammates</IonLabel>
           <IonSelect
             multiple
-            fill="outline"
             value={draft.memberIds}
             onIonChange={(event) => setDraft((current) => ({
               ...current,
@@ -924,7 +920,6 @@ const Collaboration = () => {
         <IonItem className="app-form-field">
           <IonLabel position="stacked">Milestone</IonLabel>
           <IonInput
-            fill="outline"
             value={milestoneDraft.title}
             placeholder="Working prototype"
             onIonInput={(event) => setMilestoneDraft((current) => ({
@@ -936,7 +931,6 @@ const Collaboration = () => {
         <IonItem className="app-form-field">
           <IonLabel position="stacked">Due date</IonLabel>
           <IonInput
-            fill="outline"
             type="date"
             value={milestoneDraft.dueDate}
             onIonInput={(event) => setMilestoneDraft((current) => ({
@@ -960,7 +954,6 @@ const Collaboration = () => {
         <IonItem className="app-form-field">
           <IonLabel position="stacked">Task</IonLabel>
           <IonInput
-            fill="outline"
             value={taskDraft.title}
             placeholder="Sketch the dashboard"
             onIonInput={(event) => setTaskDraft((current) => ({
@@ -972,7 +965,6 @@ const Collaboration = () => {
         <IonItem className="app-form-field">
           <IonLabel position="stacked">Assign to</IonLabel>
           <IonSelect
-            fill="outline"
             value={taskDraft.assignedTo || undefined}
             placeholder="Unassigned"
             onIonChange={(event) => setTaskDraft((current) => ({
@@ -990,7 +982,6 @@ const Collaboration = () => {
         <IonItem className="app-form-field">
           <IonLabel position="stacked">Milestone</IonLabel>
           <IonSelect
-            fill="outline"
             value={taskDraft.milestoneId || undefined}
             placeholder="None"
             onIonChange={(event) => setTaskDraft((current) => ({
@@ -1008,7 +999,6 @@ const Collaboration = () => {
         <IonItem className="app-form-field">
           <IonLabel position="stacked">Due date</IonLabel>
           <IonInput
-            fill="outline"
             type="date"
             value={taskDraft.dueDate}
             onIonInput={(event) => setTaskDraft((current) => ({
@@ -1032,7 +1022,6 @@ const Collaboration = () => {
         <IonItem className="app-form-field">
           <IonLabel position="stacked">Label</IonLabel>
           <IonInput
-            fill="outline"
             value={fileDraft.label}
             placeholder="Figma prototype"
             onIonInput={(event) => setFileDraft((current) => ({
@@ -1044,7 +1033,6 @@ const Collaboration = () => {
         <IonItem className="app-form-field">
           <IonLabel position="stacked">Link</IonLabel>
           <IonInput
-            fill="outline"
             type="url"
             inputmode="url"
             value={fileDraft.url}

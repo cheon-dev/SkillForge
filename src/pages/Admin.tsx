@@ -780,7 +780,6 @@ const Admin = () => {
         <IonItem className="app-form-field">
           <IonLabel position="stacked">Name</IonLabel>
           <IonInput
-            fill="outline"
             value={skillDraft.name}
             placeholder="Figma"
             onIonInput={(e) => setSkillDraft((c) => ({ ...c, name: e.detail.value ?? '' }))}
@@ -789,7 +788,6 @@ const Admin = () => {
         <IonItem className="app-form-field">
           <IonLabel position="stacked">Category</IonLabel>
           <IonInput
-            fill="outline"
             value={skillDraft.category}
             placeholder="UI/UX Design"
             onIonInput={(e) => setSkillDraft((c) => ({ ...c, category: e.detail.value ?? '' }))}
@@ -798,7 +796,6 @@ const Admin = () => {
         <IonItem className="app-form-field">
           <IonLabel position="stacked">Description</IonLabel>
           <IonTextarea
-            fill="outline"
             autoGrow
             value={skillDraft.description}
             placeholder="What this skill covers."
@@ -820,7 +817,6 @@ const Admin = () => {
         <IonItem className="app-form-field">
           <IonLabel position="stacked">Skill</IonLabel>
           <IonSelect
-            fill="outline"
             value={challengeDraft.skill_id}
             placeholder="Select a skill"
             onIonChange={(e) => setChallengeDraft((c) => ({ ...c, skill_id: e.detail.value }))}
@@ -831,7 +827,6 @@ const Admin = () => {
         <IonItem className="app-form-field">
           <IonLabel position="stacked">Title</IonLabel>
           <IonInput
-            fill="outline"
             value={challengeDraft.title}
             placeholder="Average of three numbers"
             onIonInput={(e) => setChallengeDraft((c) => ({ ...c, title: e.detail.value ?? '' }))}
@@ -841,7 +836,6 @@ const Admin = () => {
           <IonItem className="app-form-field">
             <IonLabel position="stacked">Difficulty</IonLabel>
             <IonSelect
-              fill="outline"
               value={challengeDraft.difficulty}
               onIonChange={(e) => setChallengeDraft((c) => ({ ...c, difficulty: e.detail.value as ProficiencyLevel }))}
             >
@@ -853,7 +847,6 @@ const Admin = () => {
           <IonItem className="app-form-field">
             <IonLabel position="stacked">XP reward</IonLabel>
             <IonInput
-              fill="outline"
               type="number"
               min="0"
               value={challengeDraft.xp_reward}
@@ -864,7 +857,6 @@ const Admin = () => {
         <IonItem className="app-form-field">
           <IonLabel position="stacked">Instructions</IonLabel>
           <IonTextarea
-            fill="outline"
             autoGrow
             value={challengeDraft.instructions}
             placeholder="What the student has to build or show."
@@ -886,7 +878,6 @@ const Admin = () => {
         <IonItem className="app-form-field">
           <IonLabel position="stacked">Name</IonLabel>
           <IonInput
-            fill="outline"
             value={achievementDraft.name}
             placeholder="Challenge Master"
             onIonInput={(e) => setAchievementDraft((c) => ({ ...c, name: e.detail.value ?? '' }))}
@@ -895,7 +886,6 @@ const Admin = () => {
         <IonItem className="app-form-field">
           <IonLabel position="stacked">Icon (emoji)</IonLabel>
           <IonInput
-            fill="outline"
             value={achievementDraft.icon}
             placeholder="🏆"
             onIonInput={(e) => setAchievementDraft((c) => ({ ...c, icon: e.detail.value ?? '' }))}
@@ -904,7 +894,6 @@ const Admin = () => {
         <IonItem className="app-form-field">
           <IonLabel position="stacked">Criteria key</IonLabel>
           <IonSelect
-            fill="outline"
             value={achievementDraft.criteria}
             onIonChange={(e) => setAchievementDraft((c) => ({ ...c, criteria: e.detail.value }))}
           >
@@ -915,7 +904,6 @@ const Admin = () => {
         <IonItem className="app-form-field">
           <IonLabel position="stacked">Description</IonLabel>
           <IonTextarea
-            fill="outline"
             autoGrow
             value={achievementDraft.description}
             placeholder="What this badge celebrates."

@@ -232,7 +232,6 @@ const Endorsements = () => {
         <IonItem className="app-form-field">
           <IonLabel position="stacked">What did you observe? (optional)</IonLabel>
           <IonTextarea
-            fill="outline"
             rows={5}
             autoGrow
             value={comment}

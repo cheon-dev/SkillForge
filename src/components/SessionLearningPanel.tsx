@@ -439,7 +439,6 @@ const SessionLearningPanel = ({ session, userId, isTeacher, onSessionCompleted }
         <IonItem className="app-form-field">
           <IonLabel position="stacked">Mission title</IonLabel>
           <IonInput
-            fill="outline"
             value={missionTitle}
             placeholder="Understand the concept"
             onIonInput={(event) => setMissionTitle(event.detail.value ?? '')}
@@ -448,7 +447,6 @@ const SessionLearningPanel = ({ session, userId, isTeacher, onSessionCompleted }
         <IonItem className="app-form-field">
           <IonLabel position="stacked">Description</IonLabel>
           <IonTextarea
-            fill="outline"
             value={missionDescription}
             autoGrow
             onIonInput={(event) => setMissionDescription(event.detail.value ?? '')}
@@ -457,7 +455,6 @@ const SessionLearningPanel = ({ session, userId, isTeacher, onSessionCompleted }
         <IonItem className="app-form-field">
           <IonLabel position="stacked">Learning goal</IonLabel>
           <IonTextarea
-            fill="outline"
             value={learningGoal}
             autoGrow
             placeholder="What the learner should be able to do afterwards."
@@ -472,7 +469,6 @@ const SessionLearningPanel = ({ session, userId, isTeacher, onSessionCompleted }
             <IonItem className="app-form-field">
               <IonLabel position="stacked">Title</IonLabel>
               <IonInput
-                fill="outline"
                 value={activity.title}
                 onIonInput={(event) => setPlanActivities((current) => current.map((item, itemIndex) => itemIndex === index ? { ...item, title: event.detail.value ?? '' } : item))}
               />
@@ -480,7 +476,6 @@ const SessionLearningPanel = ({ session, userId, isTeacher, onSessionCompleted }
             <IonItem className="app-form-field">
               <IonLabel position="stacked">Activity type</IonLabel>
               <IonSelect
-                fill="outline"
                 value={activity.activity_type}
                 onIonChange={(event) => setPlanActivities((current) => current.map((item, itemIndex) => itemIndex === index ? { ...item, activity_type: event.detail.value } : item))}
               >
@@ -492,7 +487,6 @@ const SessionLearningPanel = ({ session, userId, isTeacher, onSessionCompleted }
             <IonItem className="app-form-field">
               <IonLabel position="stacked">Instructions</IonLabel>
               <IonTextarea
-                fill="outline"
                 value={activity.instructions ?? ''}
                 autoGrow
                 onIonInput={(event) => setPlanActivities((current) => current.map((item, itemIndex) => itemIndex === index ? { ...item, instructions: event.detail.value ?? '' } : item))}
@@ -501,7 +495,6 @@ const SessionLearningPanel = ({ session, userId, isTeacher, onSessionCompleted }
             <IonItem className="app-form-field">
               <IonLabel position="stacked">Maximum XP</IonLabel>
               <IonInput
-                fill="outline"
                 type="number"
                 min="0"
                 step="1"
@@ -536,7 +529,6 @@ const SessionLearningPanel = ({ session, userId, isTeacher, onSessionCompleted }
         <IonItem className="app-form-field">
           <IonLabel position="stacked">Your answer or work</IonLabel>
           <IonTextarea
-            fill="outline"
             rows={5}
             autoGrow
             value={answerText}
@@ -562,7 +554,6 @@ const SessionLearningPanel = ({ session, userId, isTeacher, onSessionCompleted }
         <IonItem className="app-form-field">
           <IonLabel position="stacked">Score (0–100)</IonLabel>
           <IonInput
-            fill="outline"
             type="number"
             min="0"
             max="100"
@@ -573,7 +564,6 @@ const SessionLearningPanel = ({ session, userId, isTeacher, onSessionCompleted }
         <IonItem className="app-form-field">
           <IonLabel position="stacked">Result</IonLabel>
           <IonSelect
-            fill="outline"
             value={reviewDraft.passed ? 'passed' : 'retry'}
             onIonChange={(event) => setReviewDraft((current) => ({
               ...current,
@@ -587,7 +577,6 @@ const SessionLearningPanel = ({ session, userId, isTeacher, onSessionCompleted }
         <IonItem className="app-form-field">
           <IonLabel position="stacked">Feedback for learner</IonLabel>
           <IonTextarea
-            fill="outline"
             value={reviewDraft.feedback}
             autoGrow
             placeholder="What worked, and what to improve."
