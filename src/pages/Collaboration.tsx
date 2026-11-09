@@ -539,6 +539,7 @@ const Collaboration = () => {
                           </p>
                         </div>
                         {detail.project.is_owner && member.student_id !== detail.project.owner_id && (
+                          <div className="collaboration-page__member-actions">
                           <IonButton
                             size="small"
                             fill="clear"
@@ -553,8 +554,6 @@ const Collaboration = () => {
                           >
                             Remove
                           </IonButton>
-                        )}
-                        {detail.project.is_owner && member.student_id !== detail.project.owner_id && (
                           <IonSelect
                             className="collaboration-page__role-select"
                             value={member.role ?? 'Contributor'}
@@ -577,6 +576,7 @@ const Collaboration = () => {
                             <IonSelectOption value="Documentation">Documentation</IonSelectOption>
                             <IonSelectOption value="Reviewer">Reviewer</IonSelectOption>
                           </IonSelect>
+                          </div>
                         )}
                       </div>
                     </article>

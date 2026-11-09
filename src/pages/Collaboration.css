@@ -45,13 +45,36 @@
   padding: 0.15rem 0.5rem;
   border: 1px solid var(--sf-soft-border, rgba(42, 52, 97, 0.12));
   border-radius: 0.6rem;
+  --background: var(--sf-input-background, transparent);
   --padding-start: 0.25rem;
   --padding-end: 0.25rem;
+  background: var(--sf-input-background, transparent);
   font-size: 0.85rem;
 }
 
 .collaboration-page__role-select {
-  max-width: 10rem;
+  /* Override the global full-width select so it never collapses to a sliver. */
+  flex: 1 1 8rem;
+  width: auto;
+  min-width: 8rem;
+  max-width: 12rem;
+}
+
+/* Name and role on the first line; Remove and the role picker underneath. */
+.collaboration-page__member .student-page__goal-heading {
+  display: block;
+}
+
+.collaboration-page__member-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.4rem;
+}
+
+.collaboration-page__member-actions ion-button {
+  margin: 0;
 }
 
 .collaboration-page__chips {
