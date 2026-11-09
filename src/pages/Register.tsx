@@ -139,18 +139,19 @@ const Register = () => {
                 value={password}
                 autocomplete="new-password"
                 onIonInput={(event) => setPassword(event.detail.value ?? '')}
-              />
-              <IonButton
-                slot="end"
-                fill="clear"
-                type="button"
-                className="auth-page__password-toggle"
-                aria-label={showPassword ? 'Hide password' : 'Show password'}
-                aria-pressed={showPassword}
-                onClick={() => setShowPassword((visible) => !visible)}
               >
-                <IonIcon slot="icon-only" icon={showPassword ? eyeOffOutline : eyeOutline} />
-              </IonButton>
+                <IonButton
+                  slot="end"
+                  fill="clear"
+                  type="button"
+                  className="auth-page__password-toggle"
+                  aria-label={showPassword ? 'Hide password' : 'Show password'}
+                  aria-pressed={showPassword}
+                  onClick={() => setShowPassword((visible) => !visible)}
+                >
+                  <IonIcon slot="icon-only" icon={showPassword ? eyeOffOutline : eyeOutline} />
+                </IonButton>
+              </IonInput>
             </IonItem>
             <IonItem className="app-form-field">
               <IonLabel position="stacked">Confirm password</IonLabel>
@@ -159,18 +160,19 @@ const Register = () => {
                 value={confirmPassword}
                 autocomplete="new-password"
                 onIonInput={(event) => setConfirmPassword(event.detail.value ?? '')}
-              />
-              <IonButton
-                slot="end"
-                fill="clear"
-                type="button"
-                className="auth-page__password-toggle"
-                aria-label={showConfirmPassword ? 'Hide confirm password' : 'Show confirm password'}
-                aria-pressed={showConfirmPassword}
-                onClick={() => setShowConfirmPassword((visible) => !visible)}
               >
-                <IonIcon slot="icon-only" icon={showConfirmPassword ? eyeOffOutline : eyeOutline} />
-              </IonButton>
+                <IonButton
+                  slot="end"
+                  fill="clear"
+                  type="button"
+                  className="auth-page__password-toggle"
+                  aria-label={showConfirmPassword ? 'Hide confirm password' : 'Show confirm password'}
+                  aria-pressed={showConfirmPassword}
+                  onClick={() => setShowConfirmPassword((visible) => !visible)}
+                >
+                  <IonIcon slot="icon-only" icon={showConfirmPassword ? eyeOffOutline : eyeOutline} />
+                </IonButton>
+              </IonInput>
             </IonItem>
 
             <IonItem lines="none" className="auth-page__terms">

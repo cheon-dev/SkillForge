@@ -164,6 +164,14 @@ ion-select {
   --border-width: 0;
   --inner-border-width: 0;
   --min-height: auto;
+  /* No grey flash behind the whole row while a field is focused or tapped. */
+  --background-focused: transparent;
+  --background-focused-opacity: 0;
+  --background-hover: transparent;
+  --background-hover-opacity: 0;
+  --background-activated: transparent;
+  --background-activated-opacity: 0;
+  --ripple-color: transparent;
   margin: 0 0 var(--sf-field-gap);
   overflow: visible;
 }
@@ -188,6 +196,25 @@ ion-select {
 }
 
 .app-form-field ion-select {
+  --padding-top: 0.6rem;
+  --padding-bottom: 0.6rem;
+}
+
+/*
+ * ion-input and ion-textarea are scoped (not shadow) components, so Ionic's own
+ * `.sc-ion-input-md-h { --padding-start: 0 }` outranks a bare `ion-input` rule.
+ * Setting the padding here, behind the field class, wins and keeps the text
+ * away from the edge of the box.
+ */
+.app-form-field ion-input,
+.app-form-field ion-textarea,
+.app-form-field ion-select {
+  --padding-start: 1rem;
+  --padding-end: 1rem;
+}
+
+.app-form-field ion-input,
+.app-form-field ion-textarea {
   --padding-top: 0.6rem;
   --padding-bottom: 0.6rem;
 }

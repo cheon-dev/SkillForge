@@ -89,18 +89,19 @@ const Login = () => {
                 value={password}
                 autocomplete="current-password"
                 onIonInput={(event) => setPassword(event.detail.value ?? '')}
-              />
-              <IonButton
-                slot="end"
-                fill="clear"
-                type="button"
-                className="auth-page__password-toggle"
-                aria-label={showPassword ? 'Hide password' : 'Show password'}
-                aria-pressed={showPassword}
-                onClick={() => setShowPassword((visible) => !visible)}
               >
-                <IonIcon slot="icon-only" icon={showPassword ? eyeOffOutline : eyeOutline} />
-              </IonButton>
+                <IonButton
+                  slot="end"
+                  fill="clear"
+                  type="button"
+                  className="auth-page__password-toggle"
+                  aria-label={showPassword ? 'Hide password' : 'Show password'}
+                  aria-pressed={showPassword}
+                  onClick={() => setShowPassword((visible) => !visible)}
+                >
+                  <IonIcon slot="icon-only" icon={showPassword ? eyeOffOutline : eyeOutline} />
+                </IonButton>
+              </IonInput>
             </IonItem>
 
             {error && (
