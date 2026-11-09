@@ -15,6 +15,9 @@ const getUserFullName = (user: User): string | null => {
   return typeof fullName === 'string' && fullName.trim() ? fullName.trim() : null;
 };
 
+export const getEmailConfirmationRedirectUrl = (origin: string): string =>
+  new URL('/', origin).toString();
+
 const ensureProfile = async (user: User, fullName = getUserFullName(user)) => {
   const profile: ProfileInsert = {
     id: user.id,
@@ -39,6 +42,7 @@ export const registerUser = async (
     password,
     options: {
       data: { full_name: fullName.trim() },
+      emailRedirectTo: getEmailConfirmationRedirectUrl(window.location.origin),
     },
   });
 

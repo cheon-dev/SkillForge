@@ -461,7 +461,7 @@ The web app uses Firebase Cloud Messaging for opt-in browser push. Configure the
 
 Schedule `send-session-reminders` to run hourly with the configured `SESSION_REMINDER_SECRET` in the `x-cron-secret` header. The function creates one in-app reminder per participant about 24 hours before an accepted session; the notifications webhook delivers the corresponding push. Native iOS and Android push are not included in this web deployment.
 
-Vercel builds the Vite app with `npm run build`, serves `dist`, and uses the repository's `vercel.json` rewrite so nested app routes load on refresh. Set the Supabase URL/key and Firebase web client variables in Vercel; keep service-account and webhook/cron secrets in Supabase Function Secrets only.
+Vercel builds the Vite app with `npm run build`, serves `dist`, and uses the repository's `vercel.json` rewrite so nested app routes load on refresh. Set the Supabase URL/key and Firebase web client variables in Vercel; keep service-account and webhook/cron secrets in Supabase Function Secrets only. Signup confirmation redirects to the current app origin. Configure the production app URL as the Supabase Auth Site URL and allow it under Auth redirect URLs.
 
 Integration 2 — Google Calendar
 
