@@ -1239,6 +1239,10 @@ export type Database = {
         Args: { p_conversation_id: string };
         Returns: Json;
       };
+      toggle_message_reaction: {
+        Args: { p_message_id: string; p_emoji: string };
+        Returns: undefined;
+      };
       get_admin_statistics: {
         Args: Record<PropertyKey, never>;
         Returns: Json;

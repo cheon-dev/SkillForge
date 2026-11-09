@@ -1253,6 +1253,13 @@ export interface ChatMessage {
   sender_avatar_url: string | null;
   is_mine: boolean;
   seen_by_peer: boolean;
+  reactions: MessageReaction[];
+}
+
+export interface MessageReaction {
+  emoji: string;
+  count: number;
+  reacted_by_me: boolean;
 }
 
 export const getMyConversations = async (): Promise<ConversationSummary[]> => {

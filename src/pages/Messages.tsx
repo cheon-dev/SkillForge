@@ -24,6 +24,7 @@ import { useLocation } from 'react-router-dom';
 import type { RealtimeChannel } from '@supabase/supabase-js';
 import NotificationsButton from '../components/NotificationsButton';
 import { useAuth } from '../hooks/useAuth';
+import { toggleMessageReaction } from '../services/messageReactions';
 import {
   getConversationMessages,
   getFriendlyStudentError,
@@ -35,6 +36,8 @@ import {
   type ConversationSummary,
 } from '../services/student';
 import './Messages.css';
+
+const reactionEmojis = ['👍', '❤️', '😂', '😮', '😢', '🙏'];
 
 const timeLabel = (value: string): string =>
   new Intl.DateTimeFormat(undefined, { hour: '2-digit', minute: '2-digit' }).format(new Date(value));
@@ -66,6 +69,8 @@ const Messages = () => {
   const lastTypingSentRef = useRef(0);
   const typingClearRef = useRef<number | null>(null);
   const openedRef = useRef<string | null>(null);
+  const longPressTimerRef = useRef<number | null>(null);
+  const [reactionPickerMessageId, setReactionPickerMessageId] = useState<string | null>(null);
 
   const loadConversations = useCallback(async () => {
     if (!user) return;
@@ -121,6 +126,17 @@ const Messages = () => {
             await loadConversations();
           } catch {
             // a failed refresh should not break an open thread
+          }
+        },
+      )
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'message_reactions' },
+        async () => {
+          try {
+            setMessages(await getConversationMessages(activeId));
+          } catch {
+            // The chat refresh can retry on its normal polling interval.
           }
         },
       )
@@ -241,6 +257,38 @@ const Messages = () => {
     }
   };
 
+  const clearLongPressTimer = () => {
+    if (longPressTimerRef.current !== null) {
+      window.clearTimeout(longPressTimerRef.current);
+      longPressTimerRef.current = null;
+    }
+  };
+
+  const startLongPress = (messageId: string) => {
+    clearLongPressTimer();
+    longPressTimerRef.current = window.setTimeout(() => {
+      setReactionPickerMessageId(messageId);
+      longPressTimerRef.current = null;
+    }, 500);
+  };
+
+  const handleReaction = async (messageId: string, emoji: string) => {
+    setReactionPickerMessageId(null);
+    setError(null);
+    try {
+      await toggleMessageReaction(messageId, emoji);
+      if (activeId) setMessages(await getConversationMessages(activeId));
+    } catch (reactionError) {
+      setError(getFriendlyStudentError(reactionError, 'Your reaction could not be saved.'));
+    }
+  };
+
+  useEffect(() => () => {
+    if (longPressTimerRef.current !== null) {
+      window.clearTimeout(longPressTimerRef.current);
+    }
+  }, []);
+
   const totalUnread = conversations.reduce((total, c) => total + c.unread_count, 0);
 
   return (
@@ -343,6 +391,15 @@ const Messages = () => {
                 <article
                   key={message.id}
                   className={`messages-page__bubble${message.is_mine ? ' messages-page__bubble--mine' : ''}`}
+                  onPointerDown={() => startLongPress(message.id)}
+                  onPointerUp={clearLongPressTimer}
+                  onPointerLeave={clearLongPressTimer}
+                  onPointerCancel={clearLongPressTimer}
+                  onContextMenu={(event) => {
+                    event.preventDefault();
+                    setReactionPickerMessageId(message.id);
+                    clearLongPressTimer();
+                  }}
                 >
                   {!message.is_mine && (
                     <span className="messages-page__sender">
@@ -354,6 +411,54 @@ const Messages = () => {
                   {message.attachment_url && (
                     <a href={message.attachment_url} target="_blank" rel="noreferrer">Shared link</a>
                   )}
+                  {reactionPickerMessageId === message.id && (
+                    <div
+                      className="messages-page__reaction-picker"
+                      role="group"
+                      aria-label="Choose a reaction"
+                      onPointerDown={(event) => event.stopPropagation()}
+                    >
+                      {reactionEmojis.map((emoji) => (
+                        <button
+                          key={emoji}
+                          type="button"
+                          aria-label={`React with ${emoji}`}
+                          onClick={() => void handleReaction(message.id, emoji)}
+                        >
+                          {emoji}
+                        </button>
+                      ))}
+                      <button
+                        type="button"
+                        aria-label="Close reaction picker"
+                        onClick={() => setReactionPickerMessageId(null)}
+                      >
+                        ×
+                      </button>
+                    </div>
+                  )}
+                  <div className="messages-page__reaction-row">
+                    {message.reactions.map((reaction) => (
+                      <button
+                        type="button"
+                        key={reaction.emoji}
+                        className={`messages-page__reaction${reaction.reacted_by_me ? ' messages-page__reaction--mine' : ''}`}
+                        aria-label={`${reaction.emoji}, ${reaction.count} reaction${reaction.count === 1 ? '' : 's'}${reaction.reacted_by_me ? ', you reacted' : ''}`}
+                        onClick={() => void handleReaction(message.id, reaction.emoji)}
+                      >
+                        <span>{reaction.emoji}</span>
+                        <span>{reaction.count}</span>
+                      </button>
+                    ))}
+                    <button
+                      type="button"
+                      className="messages-page__react-button"
+                      aria-label="React to message"
+                      onClick={() => setReactionPickerMessageId((current) => current === message.id ? null : message.id)}
+                    >
+                      +
+                    </button>
+                  </div>
                   <span className="messages-page__time">
                     {timeLabel(message.created_at)}
                     {isLastMine && (

@@ -45,6 +45,7 @@
 }
 
 .messages-page__bubble {
+  position: relative;
   align-self: flex-start;
   display: grid;
   gap: 0.2rem;
@@ -53,6 +54,8 @@
   border-radius: 0.95rem;
   background: var(--sf-surface-muted);
   border: 1px solid var(--sf-border);
+  touch-action: pan-y;
+  user-select: none;
 }
 
 .messages-page__bubble--mine {
@@ -64,6 +67,82 @@
 .messages-page__bubble p {
   margin: 0;
   overflow-wrap: anywhere;
+  user-select: text;
+}
+
+.messages-page__reaction-picker {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.2rem;
+  width: max-content;
+  max-width: min(19rem, 80vw);
+  padding: 0.3rem;
+  border: 1px solid var(--sf-border);
+  border-radius: 2rem;
+  background: var(--sf-surface);
+  box-shadow: 0 5px 18px rgba(0, 0, 0, 0.18);
+}
+
+.messages-page__reaction-picker button,
+.messages-page__reaction,
+.messages-page__react-button {
+  display: inline-grid;
+  min-width: 2rem;
+  min-height: 2rem;
+  place-items: center;
+  border: 0;
+  border-radius: 1rem;
+  background: transparent;
+  color: var(--ion-text-color);
+  cursor: pointer;
+  font: inherit;
+}
+
+.messages-page__reaction-picker button {
+  font-size: 1.15rem;
+}
+
+.messages-page__reaction-picker button:hover,
+.messages-page__reaction-picker button:focus-visible {
+  background: var(--sf-surface-muted);
+}
+
+.messages-page__reaction-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.messages-page__reaction {
+  display: inline-flex;
+  min-height: 1.65rem;
+  gap: 0.25rem;
+  padding: 0.05rem 0.45rem;
+  border: 1px solid var(--sf-border);
+  background: var(--sf-surface);
+  font-size: 0.8rem;
+}
+
+.messages-page__reaction--mine {
+  border-color: var(--ion-color-primary);
+  background: color-mix(in srgb, var(--ion-color-primary) 12%, var(--sf-surface));
+}
+
+.messages-page__react-button {
+  min-width: 1.65rem;
+  min-height: 1.65rem;
+  border: 1px solid var(--sf-border);
+  color: var(--ion-color-medium);
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.messages-page__react-button:hover,
+.messages-page__react-button:focus-visible {
+  border-color: var(--ion-color-primary);
+  color: var(--ion-color-primary);
 }
 
 .messages-page__sender {

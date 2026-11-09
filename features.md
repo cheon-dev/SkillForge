@@ -234,6 +234,7 @@ Students can communicate through:
 - Session-related conversations
 - Collaboration group chat
 - Participant profile photos in conversation lists and message threads
+- React to messages with emoji using a long press or the reaction control; each student can choose one reaction per message and change or remove it later
 - Resource and link sharing
 
 Chat supports communication during learning sessions and project collaboration.
