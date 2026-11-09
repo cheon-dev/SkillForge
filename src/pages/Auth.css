@@ -46,3 +46,62 @@
 .auth-page__footer a {
   font-weight: 600;
 }
+
+.auth-page__password-toggle {
+  margin-inline: 0.25rem 0;
+  min-width: 2.75rem;
+}
+
+.auth-page__terms {
+  --background: transparent;
+  --inner-padding-end: 0;
+  --padding-start: 0;
+  align-items: flex-start;
+}
+
+.auth-page__terms ion-checkbox {
+  margin-top: 0.25rem;
+  margin-inline-end: 0.75rem;
+}
+
+.auth-page__terms ion-label {
+  white-space: normal;
+  line-height: 1.5;
+}
+
+.auth-page__terms-link {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ion-color-primary);
+  font: inherit;
+  font-weight: 600;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.auth-page__terms-content {
+  --padding-bottom: 1rem;
+}
+
+.auth-page__terms-document {
+  max-width: 48rem;
+  margin: 0 auto;
+  padding: 1rem 1.25rem;
+  line-height: 1.6;
+}
+
+.auth-page__terms-document h2 {
+  margin: 1.4rem 0 0.35rem;
+  font-size: 1.1rem;
+}
+
+.auth-page__terms-document p {
+  margin: 0 0 0.85rem;
+}
+
+.auth-page__terms-actions {
+  display: flex;
+  justify-content: center;
+  padding: 0 1rem 1.5rem;
+}

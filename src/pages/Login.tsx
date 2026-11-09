@@ -3,6 +3,7 @@ import {
   IonButton,
   IonContent,
   IonHeader,
+  IonIcon,
   IonInput,
   IonItem,
   IonLabel,
@@ -12,6 +13,7 @@ import {
   IonTitle,
   IonToolbar,
 } from '@ionic/react';
+import { eyeOffOutline, eyeOutline } from 'ionicons/icons';
 import { Navigate, Link, useNavigate } from 'react-router-dom';
 import AuthLoading from '../components/AuthLoading';
 import { getFriendlyAuthError, loginUser } from '../services/auth';
@@ -23,6 +25,7 @@ const Login = () => {
   const { isAuthenticated, loading } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
@@ -82,11 +85,22 @@ const Login = () => {
             <IonItem className="app-form-field">
               <IonLabel position="stacked">Password</IonLabel>
               <IonInput fill="outline"
-                type="password"
+                type={showPassword ? 'text' : 'password'}
                 value={password}
                 autocomplete="current-password"
                 onIonInput={(event) => setPassword(event.detail.value ?? '')}
               />
+              <IonButton
+                slot="end"
+                fill="clear"
+                type="button"
+                className="auth-page__password-toggle"
+                aria-label={showPassword ? 'Hide password' : 'Show password'}
+                aria-pressed={showPassword}
+                onClick={() => setShowPassword((visible) => !visible)}
+              >
+                <IonIcon slot="icon-only" icon={showPassword ? eyeOffOutline : eyeOutline} />
+              </IonButton>
             </IonItem>
 
             {error && (
