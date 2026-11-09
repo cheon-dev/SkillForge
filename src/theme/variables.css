@@ -152,3 +152,33 @@
 .ion-color-danger { --ion-color-base: var(--ion-color-danger); --ion-color-base-rgb: var(--ion-color-danger-rgb); --ion-color-contrast: var(--ion-color-danger-contrast); --ion-color-shade: var(--ion-color-danger-shade); --ion-color-tint: var(--ion-color-danger-tint); }
 .ion-color-medium { --ion-color-base: var(--ion-color-medium); --ion-color-base-rgb: var(--ion-color-medium-rgb); --ion-color-contrast: var(--ion-color-medium-contrast); --ion-color-shade: var(--ion-color-medium-shade); --ion-color-tint: var(--ion-color-medium-tint); }
 .ion-color-light { --ion-color-base: var(--ion-color-light); --ion-color-base-rgb: var(--ion-color-light-rgb); --ion-color-contrast: var(--ion-color-light-contrast); --ion-color-shade: var(--ion-color-light-shade); --ion-color-tint: var(--ion-color-light-tint); }
+
+/*
+ * Ionic's overlays (select alerts, popovers, action sheets, pickers) read the
+ * --ion-color-step-* scale for their text, borders and backgrounds. Without it
+ * they fall back to light-mode greys, which are unreadable on the dark theme.
+ * Build the scale from the theme's own background and text colors so it follows
+ * the active light/dark theme automatically.
+ */
+:root {
+  --ion-color-step-50: color-mix(in srgb, var(--ion-text-color) 5%, var(--ion-background-color));
+  --ion-color-step-100: color-mix(in srgb, var(--ion-text-color) 10%, var(--ion-background-color));
+  --ion-color-step-150: color-mix(in srgb, var(--ion-text-color) 15%, var(--ion-background-color));
+  --ion-color-step-200: color-mix(in srgb, var(--ion-text-color) 20%, var(--ion-background-color));
+  --ion-color-step-250: color-mix(in srgb, var(--ion-text-color) 25%, var(--ion-background-color));
+  --ion-color-step-300: color-mix(in srgb, var(--ion-text-color) 30%, var(--ion-background-color));
+  --ion-color-step-350: color-mix(in srgb, var(--ion-text-color) 35%, var(--ion-background-color));
+  --ion-color-step-400: color-mix(in srgb, var(--ion-text-color) 40%, var(--ion-background-color));
+  --ion-color-step-450: color-mix(in srgb, var(--ion-text-color) 45%, var(--ion-background-color));
+  --ion-color-step-500: color-mix(in srgb, var(--ion-text-color) 50%, var(--ion-background-color));
+  --ion-color-step-550: color-mix(in srgb, var(--ion-text-color) 55%, var(--ion-background-color));
+  --ion-color-step-600: color-mix(in srgb, var(--ion-text-color) 60%, var(--ion-background-color));
+  --ion-color-step-650: color-mix(in srgb, var(--ion-text-color) 65%, var(--ion-background-color));
+  --ion-color-step-700: color-mix(in srgb, var(--ion-text-color) 70%, var(--ion-background-color));
+  --ion-color-step-750: color-mix(in srgb, var(--ion-text-color) 75%, var(--ion-background-color));
+  --ion-color-step-800: color-mix(in srgb, var(--ion-text-color) 80%, var(--ion-background-color));
+  --ion-color-step-850: color-mix(in srgb, var(--ion-text-color) 85%, var(--ion-background-color));
+  --ion-color-step-900: color-mix(in srgb, var(--ion-text-color) 90%, var(--ion-background-color));
+  --ion-color-step-950: color-mix(in srgb, var(--ion-text-color) 95%, var(--ion-background-color));
+  --ion-overlay-background-color: var(--sf-surface);
+}
