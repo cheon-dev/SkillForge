@@ -80,7 +80,11 @@ Students can:
 
 Skill exchange is focused on mutual learning and skill development rather than monetary transactions.
 
-5. Gamified Learning Sessions — Core Learning Workflow
+5. Self-Paced Learning
+
+Students can follow short guided lessons across the starter skill catalog. Each lesson includes key concepts, an example, a practice prompt, and a knowledge check. Completion is saved per student and can be continued across devices. Self-paced completion tracks study progress only; it does not award XP or Skill Credits.
+
+6. Gamified Learning Sessions — Core Learning Workflow
 
 Learning sessions are structured, interactive, and gamified. They are not merely calendar appointments or records of meetings.
 
@@ -221,7 +225,7 @@ During and after a session, students can view:
 
 Gamification should encourage consistent learning and practice. It must not replace actual learning evidence or verified activity completion.
 
-6. Real-Time Chat
+7. Real-Time Chat
 
 Students can communicate through:
 
@@ -232,11 +236,11 @@ Students can communicate through:
 
 Chat supports communication during learning sessions and project collaboration.
 
-7. Student Reports and Moderation
+8. Student Reports and Moderation
 
 Students can report another student from Discover with a reason and optional details. Moderators can review open reports and resolve or dismiss them. Admins can permanently delete a reported account where necessary. Report submission and moderation are authorized by database RPCs. The current workflow covers student profiles only; reporting individual messages or other content is not included.
 
-8. Skill Evidence / Portfolio
+9. Skill Evidence / Portfolio
 
 Students can submit or link evidence of their work, including:
 
@@ -249,7 +253,7 @@ Students can submit or link evidence of their work, including:
 
 Evidence can demonstrate practical skill development and contribute to the student's Skill Passport.
 
-9. Peer Endorsements
+10. Peer Endorsements
 
 After eligible sessions or collaborations, students can:
 
@@ -259,7 +263,7 @@ After eligible sessions or collaborations, students can:
 
 Endorsements should follow the platform's eligibility rules and must not be treated as automatic proof of proficiency.
 
-10. Achievements and Badges
+11. Achievements and Badges
 
 Achievements recognize meaningful learning milestones.
 
@@ -274,7 +278,7 @@ Examples:
 
 Each skill also has a “[Skill] Master” badge, earned after passing three different reviewed Skill Challenges for that skill (for example, C# Master). New catalog skills receive a matching badge automatically. Achievements are granted according to verified database conditions, not arbitrary client-side actions.
 
-11. Notifications
+12. Notifications
 
 The system can notify students about:
 
@@ -290,7 +294,7 @@ The system can notify students about:
 
 Firebase Cloud Messaging supports push notifications. Notifications must correspond to actual application events.
 
-12. Collaboration Rooms
+13. Collaboration Rooms
 
 Students with complementary skills can form teams to work on actual projects.
 
@@ -310,7 +314,7 @@ Features include:
 - Project progress
 - Collaboration history
 
-13. Skill Analytics
+14. Skill Analytics
 
 Students can track:
 
@@ -326,7 +330,7 @@ Students can track:
 
 Analytics should be derived from actual recorded application data.
 
-14. Admin / Moderator
+15. Admin / Moderator
 
 Authorized administrators or moderators can:
 

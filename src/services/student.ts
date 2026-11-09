@@ -140,6 +140,41 @@ export const getSkillCatalog = async (): Promise<Skill[]> => {
   return data ?? [];
 };
 
+export interface SelfPacedLessonProgress {
+  lesson_key: string;
+  completed_at: string;
+}
+
+export const getSelfPacedLessonProgress = async (
+  studentId: string,
+): Promise<SelfPacedLessonProgress[]> => {
+  const { data, error } = await getSupabaseClient()
+    .from('self_paced_lesson_progress')
+    .select('lesson_key, completed_at')
+    .eq('student_id', studentId)
+    .order('completed_at', { ascending: true });
+
+  if (error) throw error;
+  return data ?? [];
+};
+
+export const completeSelfPacedLesson = async (
+  studentId: string,
+  lessonKey: string,
+): Promise<SelfPacedLessonProgress> => {
+  const { data, error } = await getSupabaseClient()
+    .from('self_paced_lesson_progress')
+    .upsert(
+      { student_id: studentId, lesson_key: lessonKey },
+      { onConflict: 'student_id,lesson_key' },
+    )
+    .select('lesson_key, completed_at')
+    .single();
+
+  if (error) throw error;
+  return data;
+};
+
 export const getStudentSkills = async (studentId: string): Promise<StudentSkill[]> => {
   const { data, error } = await getSupabaseClient()
     .from('student_skills')

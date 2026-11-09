@@ -381,6 +381,9 @@ const Learning = () => {
             <IonButton fill="outline" routerLink="/tabs/challenges">
               Go to Skill Challenges
             </IonButton>
+            <IonButton fill="clear" routerLink="/tabs/self-paced">
+              Explore self-paced lessons
+            </IonButton>
           </section>
 
           {error && (

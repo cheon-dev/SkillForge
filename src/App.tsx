@@ -18,6 +18,7 @@ import Notifications from './pages/Notifications';
 import Profile from './pages/Profile';
 import Settings from './pages/Settings';
 import SkillPassport from './pages/SkillPassport';
+import SelfPaced from './pages/SelfPaced';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import { ThemeProvider } from './theme/ThemeProvider';
@@ -59,6 +60,7 @@ const ProtectedApplication = () => (
       <Route path="home" element={<Home />} />
       <Route path="discover" element={<Discover />} />
       <Route path="learning" element={<Learning />} />
+      <Route path="self-paced" element={<SelfPaced />} />
       <Route path="arena" element={<Arena />} />
       <Route path="challenges" element={<Challenges />} />
       <Route path="skill-passport" element={<SkillPassport />} />

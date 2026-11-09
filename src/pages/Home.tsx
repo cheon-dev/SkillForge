@@ -69,6 +69,12 @@ const Home: React.FC = () => {
             <IonListHeader>
               <IonLabel>Continue your journey</IonLabel>
             </IonListHeader>
+            <IonItem button detail routerLink="/tabs/self-paced">
+              <IonLabel>
+                <h2>Self-paced lessons</h2>
+                <p>Study short guided lessons and save your progress.</p>
+              </IonLabel>
+            </IonItem>
             <IonItem button detail routerLink="/tabs/learning">
               <IonLabel>
                 <h2>Learning sessions</h2>

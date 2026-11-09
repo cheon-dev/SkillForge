@@ -1,0 +1,65 @@
+.self-paced-page__summary-row {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.self-paced-page__summary-row > div {
+  display: flex;
+  align-items: baseline;
+  gap: 0.55rem;
+}
+
+.self-paced-page__summary-row strong {
+  font-size: 1.4rem;
+}
+
+.self-paced-page__summary-row span {
+  color: var(--ion-color-medium);
+}
+
+.self-paced-page__courses {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
+  gap: 0.5rem;
+}
+
+.self-paced-page__course {
+  align-self: start;
+}
+
+.self-paced-page__course ion-progress-bar {
+  margin-top: 0.75rem;
+}
+
+.self-paced-page__lesson-area {
+  margin-top: 1.6rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--sf-soft-border);
+}
+
+.self-paced-page__lesson-area h2 {
+  margin: 0;
+}
+
+.self-paced-page__learn-list {
+  display: grid;
+  gap: 0.65rem;
+  padding-left: 1.3rem;
+  line-height: 1.55;
+}
+
+.self-paced-page__example {
+  overflow-x: auto;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  background: var(--ion-color-light);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  white-space: pre-wrap;
+}
+
+.self-paced-page__lesson-navigation {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+}

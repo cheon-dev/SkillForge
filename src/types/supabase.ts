@@ -1095,6 +1095,32 @@ export type Database = {
         };
         Relationships: [];
       };
+      self_paced_lesson_progress: {
+        Row: {
+          student_id: string;
+          lesson_key: string;
+          completed_at: string;
+        };
+        Insert: {
+          student_id: string;
+          lesson_key: string;
+          completed_at?: string;
+        };
+        Update: {
+          student_id?: string;
+          lesson_key?: string;
+          completed_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'self_paced_lesson_progress_student_id_fkey';
+            columns: ['student_id'];
+            isOneToOne: false;
+            referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
     };
     Views: Record<string, never>;
     Functions: {
