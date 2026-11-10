@@ -1059,6 +1059,29 @@
   min-width: 0;
 }
 
+.profile-page__credits {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.45rem;
+  padding: 0.35rem 0.7rem;
+  border: 1px solid color-mix(in srgb, var(--ion-color-warning) 32%, var(--sf-border));
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--ion-color-warning) 12%, var(--sf-surface));
+  color: var(--ion-color-warning-shade);
+  font-size: 0.85rem;
+}
+
+.profile-page__credits ion-icon {
+  font-size: 1.05rem;
+}
+
+.profile-page__credits-error {
+  margin: 0.35rem 0 0;
+  color: var(--ion-color-danger);
+  font-size: 0.78rem;
+}
+
 .profile-page__badges {
   display: flex;
   flex-wrap: wrap;

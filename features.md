@@ -28,6 +28,7 @@ Each student has a profile containing:
 - Learning goals
 - Availability
 - Learning progress and achievements
+- Skill Credits balance
 
 Students can update their own profile and manage their skills and learning goals.
 
@@ -83,7 +84,7 @@ Skill exchange is focused on mutual learning and skill development rather than m
 
 5. Self-Paced Learning
 
-Students can follow short guided lessons across the starter skill catalog. Each lesson includes key concepts, an example, a practice prompt, and a knowledge check. Completion is saved per student and can be continued across devices. Self-paced completion tracks study progress only; it does not award XP or Skill Credits.
+Students can follow short guided lessons across the starter skill catalog. Each lesson includes key concepts, an example, a practice prompt, and a knowledge check. Lessons expand inside their course card, and progress is saved per student and can be continued across devices. Self-paced completion tracks study progress only; it does not award XP or Skill Credits.
 
 6. Gamified Learning Sessions — Core Learning Workflow
 
@@ -312,6 +313,7 @@ Example team:
 Features include:
 
 - Group chat
+- Any room member can invite additional students; leaving prompts for confirmation
 - Tasks and assignments
 - Milestones
 - Shared files

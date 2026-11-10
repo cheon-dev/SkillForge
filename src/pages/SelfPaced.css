@@ -27,6 +27,15 @@
   align-self: start;
 }
 
+.self-paced-page__course--expanded {
+  grid-column: 1 / -1;
+}
+
+.self-paced-page__course > ion-card-content > ion-button[aria-expanded] {
+  --padding-start: 0.8rem;
+  --padding-end: 0.8rem;
+}
+
 .self-paced-page__course ion-progress-bar {
   margin-top: 0.75rem;
 }
@@ -35,6 +44,10 @@
   margin-top: 1.6rem;
   padding-top: 1rem;
   border-top: 1px solid var(--sf-soft-border);
+}
+
+.self-paced-page__lesson-area > ion-card {
+  margin-inline: 0;
 }
 
 .self-paced-page__lesson-area h2 {

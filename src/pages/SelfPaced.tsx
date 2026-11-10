@@ -10,6 +10,7 @@ import {
   IonCardTitle,
   IonContent,
   IonHeader,
+  IonIcon,
   IonItem,
   IonLabel,
   IonPage,
@@ -21,6 +22,7 @@ import {
   IonTitle,
   IonToolbar,
 } from '@ionic/react';
+import { chevronDownOutline, chevronUpOutline } from 'ionicons/icons';
 import NotificationsButton from '../components/NotificationsButton';
 import { selfPacedCourses, type SelfPacedCourse } from '../data/selfPacedCourses';
 import { useAuth } from '../hooks/useAuth';
@@ -103,6 +105,17 @@ const SelfPaced = () => {
     setSelectedAnswer(null);
     setCheckedAnswer(false);
     setNotice(null);
+  };
+
+  const toggleCourse = (course: SelfPacedCourse) => {
+    if (selectedCourseSkill === course.skill) {
+      setSelectedCourseSkill(null);
+      setSelectedLessonId(null);
+      setSelectedAnswer(null);
+      setCheckedAnswer(false);
+      return;
+    }
+    openCourse(course);
   };
 
   const openLesson = (lessonId: string) => {
@@ -203,8 +216,13 @@ const SelfPaced = () => {
               <section className="self-paced-page__courses" aria-label="Learning paths">
                 {filteredCourses.map((course) => {
                   const progress = getSelfPacedCourseProgress(course, completedIds);
+                  const isExpanded = selectedCourseSkill === course.skill && selectedLesson !== null;
+                  const lessonPanelId = `self-paced-lesson-${course.skill.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
                   return (
-                    <IonCard key={course.skill} className="self-paced-page__course">
+                    <IonCard
+                      key={course.skill}
+                      className={`self-paced-page__course${isExpanded ? ' self-paced-page__course--expanded' : ''}`}
+                    >
                       <IonCardHeader>
                         <div className="student-page__goal-heading">
                           <div>
@@ -222,9 +240,136 @@ const SelfPaced = () => {
                         <p className="student-page__card-note">
                           {progress.completedLessons} of {progress.totalLessons} lessons complete
                         </p>
-                        <IonButton size="small" onClick={() => openCourse(course)}>
-                          {progress.percentComplete === 100 ? 'Review course' : progress.completedLessons ? 'Continue learning' : 'Start learning'}
+                        <IonButton
+                          size="small"
+                          aria-expanded={isExpanded}
+                          aria-controls={lessonPanelId}
+                          onClick={() => toggleCourse(course)}
+                        >
+                          {isExpanded
+                            ? 'Hide lesson'
+                            : progress.percentComplete === 100
+                              ? 'Review course'
+                              : progress.completedLessons
+                                ? 'Continue learning'
+                                : 'Start learning'}
+                          <IonIcon
+                            slot="end"
+                            icon={isExpanded ? chevronUpOutline : chevronDownOutline}
+                          />
                         </IonButton>
+                        {isExpanded && selectedLesson && (
+                          <section
+                            id={lessonPanelId}
+                            className="self-paced-page__lesson-area"
+                            aria-label={`${course.title} lesson`}
+                          >
+                            <div className="student-page__goal-heading">
+                              <div>
+                                <p className="student-page__eyebrow">{course.title}</p>
+                                <h2>{selectedLesson.title}</h2>
+                              </div>
+                              <IonBadge color={completedIds.has(selectedLesson.id) ? 'success' : 'medium'}>
+                                {completedIds.has(selectedLesson.id)
+                                  ? 'Completed'
+                                  : `${selectedLesson.minutes} min`}
+                              </IonBadge>
+                            </div>
+
+                            <IonCard>
+                              <IonCardHeader>
+                                <IonCardTitle>Learn</IonCardTitle>
+                              </IonCardHeader>
+                              <IonCardContent>
+                                <ul className="self-paced-page__learn-list">
+                                  {selectedLesson.learn.map((point) => <li key={point}>{point}</li>)}
+                                </ul>
+                                <h3>Example</h3>
+                                <pre className="self-paced-page__example">
+                                  <code>{selectedLesson.example}</code>
+                                </pre>
+                                <h3>Try it</h3>
+                                <p>{selectedLesson.practice}</p>
+                              </IonCardContent>
+                            </IonCard>
+
+                            <IonCard>
+                              <IonCardHeader>
+                                <IonCardTitle>Check your understanding</IonCardTitle>
+                              </IonCardHeader>
+                              <IonCardContent>
+                                <p>{selectedLesson.question}</p>
+                                <IonSelect
+                                  placeholder="Choose an answer"
+                                  value={selectedAnswer === null ? undefined : String(selectedAnswer)}
+                                  onIonChange={(event) => {
+                                    const answer = Number(event.detail.value);
+                                    setSelectedAnswer(Number.isInteger(answer) ? answer : null);
+                                    setCheckedAnswer(false);
+                                  }}
+                                  aria-label="Choose your answer"
+                                >
+                                  {selectedLesson.options.map((option, index) => (
+                                    <IonSelectOption key={option} value={String(index)}>
+                                      {option}
+                                    </IonSelectOption>
+                                  ))}
+                                </IonSelect>
+                                <div className="student-page__actions">
+                                  <IonButton
+                                    fill="outline"
+                                    disabled={selectedAnswer === null || completedIds.has(selectedLesson.id)}
+                                    onClick={() => setCheckedAnswer(true)}
+                                  >
+                                    Check answer
+                                  </IonButton>
+                                  {checkedAnswer && selectedAnswer !== null && (
+                                    <IonText color={selectedAnswer === selectedLesson.answer ? 'success' : 'danger'}>
+                                      {selectedAnswer === selectedLesson.answer
+                                        ? selectedLesson.explanation
+                                        : 'Not quite. Review the lesson and try again.'}
+                                    </IonText>
+                                  )}
+                                </div>
+                                <IonButton
+                                  disabled={
+                                    saving
+                                    || completedIds.has(selectedLesson.id)
+                                    || !checkedAnswer
+                                    || selectedAnswer !== selectedLesson.answer
+                                  }
+                                  onClick={() => void markLessonComplete()}
+                                >
+                                  {saving
+                                    ? <IonSpinner name="crescent" />
+                                    : completedIds.has(selectedLesson.id)
+                                      ? 'Lesson completed'
+                                      : 'Mark lesson complete'}
+                                </IonButton>
+                              </IonCardContent>
+                            </IonCard>
+
+                            <div className="self-paced-page__lesson-navigation">
+                              <IonButton
+                                fill="clear"
+                                disabled={course.lessons[0]?.id === selectedLesson.id}
+                                onClick={() => moveLesson(-1)}
+                              >
+                                Previous lesson
+                              </IonButton>
+                              <IonButton
+                                fill="clear"
+                                disabled={course.lessons.at(-1)?.id === selectedLesson.id}
+                                onClick={() => moveLesson(1)}
+                              >
+                                Next lesson
+                              </IonButton>
+                            </div>
+                            <IonButton fill="outline" routerLink="/tabs/challenges">
+                              Practice in Skill Challenges
+                            </IonButton>
+                          </section>
+                        )}
                       </IonCardContent>
                     </IonCard>
                   );
@@ -237,93 +382,6 @@ const SelfPaced = () => {
                 </div>
               )}
 
-              {selectedCourse && selectedLesson && (
-                <section className="self-paced-page__lesson-area" aria-label={`${selectedCourse.title} lesson`}>
-                  <div className="student-page__goal-heading">
-                    <div>
-                      <p className="student-page__eyebrow">{selectedCourse.title}</p>
-                      <h2>{selectedLesson.title}</h2>
-                    </div>
-                    <IonBadge color={completedIds.has(selectedLesson.id) ? 'success' : 'medium'}>
-                      {completedIds.has(selectedLesson.id) ? 'Completed' : `${selectedLesson.minutes} min`}
-                    </IonBadge>
-                  </div>
-
-                  <IonCard>
-                    <IonCardHeader>
-                      <IonCardTitle>Learn</IonCardTitle>
-                    </IonCardHeader>
-                    <IonCardContent>
-                      <ul className="self-paced-page__learn-list">
-                        {selectedLesson.learn.map((point) => <li key={point}>{point}</li>)}
-                      </ul>
-                      <h3>Example</h3>
-                      <pre className="self-paced-page__example"><code>{selectedLesson.example}</code></pre>
-                      <h3>Try it</h3>
-                      <p>{selectedLesson.practice}</p>
-                    </IonCardContent>
-                  </IonCard>
-
-                  <IonCard>
-                    <IonCardHeader><IonCardTitle>Check your understanding</IonCardTitle></IonCardHeader>
-                    <IonCardContent>
-                      <p>{selectedLesson.question}</p>
-                      <IonSelect
-                        placeholder="Choose an answer"
-                        value={selectedAnswer === null ? undefined : String(selectedAnswer)}
-                        onIonChange={(event) => {
-                          const answer = Number(event.detail.value);
-                          setSelectedAnswer(Number.isInteger(answer) ? answer : null);
-                          setCheckedAnswer(false);
-                        }}
-                        aria-label="Choose your answer"
-                      >
-                        {selectedLesson.options.map((option, index) => (
-                          <IonSelectOption key={option} value={String(index)}>{option}</IonSelectOption>
-                        ))}
-                      </IonSelect>
-                      <div className="student-page__actions">
-                        <IonButton
-                          fill="outline"
-                          disabled={selectedAnswer === null || completedIds.has(selectedLesson.id)}
-                          onClick={() => setCheckedAnswer(true)}
-                        >
-                          Check answer
-                        </IonButton>
-                        {checkedAnswer && selectedAnswer !== null && (
-                          <IonText color={selectedAnswer === selectedLesson.answer ? 'success' : 'danger'}>
-                            {selectedAnswer === selectedLesson.answer
-                              ? selectedLesson.explanation
-                              : 'Not quite. Review the lesson and try again.'}
-                          </IonText>
-                        )}
-                      </div>
-                      <IonButton
-                        disabled={saving || completedIds.has(selectedLesson.id) || !checkedAnswer || selectedAnswer !== selectedLesson.answer}
-                        onClick={() => void markLessonComplete()}
-                      >
-                        {saving ? <IonSpinner name="crescent" /> : completedIds.has(selectedLesson.id) ? 'Lesson completed' : 'Mark lesson complete'}
-                      </IonButton>
-                    </IonCardContent>
-                  </IonCard>
-
-                  <div className="self-paced-page__lesson-navigation">
-                    <IonButton fill="clear" disabled={selectedCourse.lessons[0]?.id === selectedLesson.id} onClick={() => moveLesson(-1)}>
-                      Previous lesson
-                    </IonButton>
-                    <IonButton
-                      fill="clear"
-                      disabled={selectedCourse.lessons.at(-1)?.id === selectedLesson.id}
-                      onClick={() => moveLesson(1)}
-                    >
-                      Next lesson
-                    </IonButton>
-                  </div>
-                  <IonButton fill="outline" routerLink="/tabs/challenges">
-                    Practice in Skill Challenges
-                  </IonButton>
-                </section>
-              )}
             </>
           )}
         </main>

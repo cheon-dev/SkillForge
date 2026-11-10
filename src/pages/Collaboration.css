@@ -60,6 +60,17 @@
   max-width: 12rem;
 }
 
+.collaboration-page__invite-select {
+  max-width: 32rem;
+  margin: 0.4rem 0 0.75rem;
+  --background: var(--sf-input-background, transparent);
+  --border-color: var(--sf-soft-border, rgba(42, 52, 97, 0.12));
+}
+
+.collaboration-page__invite-select ion-select {
+  width: 100%;
+}
+
 /* Name and role on the first line; Remove and the role picker underneath. */
 .collaboration-page__member .student-page__goal-heading {
   display: block;

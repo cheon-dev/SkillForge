@@ -122,6 +122,7 @@ const Collaboration = () => {
   const [detail, setDetail] = useState<ProjectDetail | null>(null);  const [detailLoading, setDetailLoading] = useState(false);
   const [recommendations, setRecommendations] = useState<ProjectRecommendation[]>([]);
   const [busy, setBusy] = useState(false);
+  const [newMemberId, setNewMemberId] = useState('');
 
   const [milestoneDraft, setMilestoneDraft] = useState({ title: '', dueDate: '' });
   const [taskDraft, setTaskDraft] = useState({
@@ -174,6 +175,7 @@ const Collaboration = () => {
 
   const openProject = useCallback(async (projectId: string) => {
     setDetailLoading(true);
+    setNewMemberId('');
     setError(null);
     setMessage(null);
     try {
@@ -193,6 +195,7 @@ const Collaboration = () => {
   const closeProject = () => {
     setDetail(null);
     setRecommendations([]);
+    setNewMemberId('');
     setMilestoneDraft({ title: '', dueDate: '' });
     setTaskDraft({ title: '', assignedTo: '', milestoneId: '', dueDate: '' });
     setFileDraft({ label: '', url: '' });
@@ -335,6 +338,13 @@ const Collaboration = () => {
     () => detail?.members ?? [],
     [detail],
   );
+  const availableMembers = useMemo(
+    () => directory.filter((candidate) =>
+      !detail?.members.some((member) => member.student_id === candidate.student_id),
+    ),
+    [detail, directory],
+  );
+  const selectedMember = availableMembers.find((candidate) => candidate.student_id === newMemberId);
 
   const taskOwnerName = (taskId: string): string => {
     const task = detail?.tasks.find((item) => item.task_id === taskId);
@@ -589,6 +599,9 @@ const Collaboration = () => {
                       color="danger"
                       disabled={busy}
                       onClick={() => {
+                        if (!window.confirm(
+                          `Are you sure you want to leave "${detail.project.name}"? You will need another member to invite you back.`,
+                        )) return;
                         void runAction(async () => {
                           await removeProjectMember(detail.project.project_id, user!.id);
                           closeProject();
@@ -597,6 +610,54 @@ const Collaboration = () => {
                     >
                       Leave project
                     </IonButton>
+                  )}
+
+                  <h3 className="collaboration-page__subtitle">Add a member</h3>
+                  {availableMembers.length > 0 ? (
+                    <>
+                      <IonItem className="collaboration-page__invite-select">
+                        <IonLabel position="stacked">Choose a student</IonLabel>
+                        <IonSelect
+                          value={newMemberId}
+                          placeholder="Select a student"
+                          disabled={busy}
+                          onIonChange={(event) => setNewMemberId(event.detail.value ?? '')}
+                          aria-label="Choose a student to add to this project"
+                        >
+                          {availableMembers.map((candidate) => (
+                            <IonSelectOption
+                              key={candidate.student_id}
+                              value={candidate.student_id}
+                            >
+                              {candidate.full_name}
+                              {candidate.course ? ` · ${candidate.course}` : ''}
+                            </IonSelectOption>
+                          ))}
+                        </IonSelect>
+                      </IonItem>
+                      <IonButton
+                        size="small"
+                        disabled={busy || !selectedMember}
+                        onClick={() => {
+                          if (!detail || !selectedMember) return;
+                          void runAction(async () => {
+                            await addProjectMember(
+                              detail.project.project_id,
+                              selectedMember.student_id,
+                              'Contributor',
+                            );
+                            setNewMemberId('');
+                            await refreshDetail(detail.project.project_id);
+                          }, `${selectedMember.full_name} was added to the project.`);
+                        }}
+                      >
+                        Invite member
+                      </IonButton>
+                    </>
+                  ) : (
+                    <p className="student-page__card-note">
+                      All available students are already members of this project.
+                    </p>
                   )}
 
                   {detail.project.is_owner && recommendations.length > 0 && (

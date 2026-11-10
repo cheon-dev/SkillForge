@@ -25,15 +25,17 @@ import {
   IonToggle,
   IonToolbar,
 } from '@ionic/react';
-import { addOutline, createOutline, settingsOutline } from 'ionicons/icons';
+import { addOutline, createOutline, settingsOutline, walletOutline } from 'ionicons/icons';
 import FormModal from '../components/FormModal';
 import NotificationsButton from '../components/NotificationsButton';
 import { useAuth } from '../hooks/useAuth';
 import {
   addStudentSkill,
   getMyAvailability,
+  getMyCredits,
   setMyAvailability,
   type AvailabilitySlot,
+  type CreditSummary,
   getFriendlyStudentError,
   getSkillCatalog,
   getSkillPassport,
@@ -122,6 +124,8 @@ const Profile = () => {
   const [signingOut, setSigningOut] = useState(false);
   const [availability, setAvailability] = useState<AvailabilitySlot[]>([]);
   const [badges, setBadges] = useState<PassportAchievement[]>([]);
+  const [credits, setCredits] = useState<CreditSummary | null>(null);
+  const [creditsError, setCreditsError] = useState<string | null>(null);
 
   // Modal state. Nothing below is shown on the page until a dialog opens.
   const [profileModalOpen, setProfileModalOpen] = useState(false);
@@ -151,6 +155,8 @@ const Profile = () => {
     const loadStudentData = async () => {
       setLoading(true);
       setError(null);
+      setCredits(null);
+      setCreditsError(null);
 
       try {
         const [loadedProfile, loadedCatalog, loadedStudentSkills, loadedAvailability] = await Promise.all([
@@ -189,6 +195,22 @@ const Profile = () => {
       } catch {
         if (isMounted) {
           setBadges([]);
+        }
+      }
+
+      try {
+        const creditSummary = await getMyCredits();
+        if (isMounted) {
+          setCredits(creditSummary);
+          setCreditsError(null);
+        }
+      } catch (creditLoadError) {
+        if (isMounted) {
+          setCredits(null);
+          setCreditsError(getFriendlyStudentError(
+            creditLoadError,
+            'Your Skill Credits balance could not be loaded.',
+          ));
         }
       }
     };
@@ -485,6 +507,16 @@ const Profile = () => {
               <div>
                 <h1>{displayName}</h1>
                 <p>{user.email}</p>
+                <div className="profile-page__credits" aria-live="polite">
+                  <IonIcon icon={walletOutline} aria-hidden="true" />
+                  <span>Skill Credits</span>
+                  {credits
+                    ? <strong>{credits.balance}</strong>
+                    : <strong>{creditsError ? 'Unavailable' : '...'}</strong>}
+                </div>
+                {creditsError && (
+                  <p className="profile-page__credits-error" role="status">{creditsError}</p>
+                )}
                 {badges.length > 0 && (
                   <ul className="profile-page__badges" aria-label="Earned badges">
                     {badges.map((badge) => (
