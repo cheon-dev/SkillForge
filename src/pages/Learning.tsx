@@ -24,6 +24,7 @@ import {
   useIonRouter,
 } from '@ionic/react';
 import { useAuth } from '../hooks/useAuth';
+import { useConfirm } from '../hooks/useConfirm';
 import { addOutline, refreshOutline } from 'ionicons/icons';
 import { getGoogleCalendarUrl } from '../utils/calendar';
 import FormModal from '../components/FormModal';
@@ -92,6 +93,7 @@ const toLocalDateTimeInput = (value: string) => {
 const Learning = () => {
   const { user, loading: authLoading } = useAuth();
   const router = useIonRouter();
+  const confirm = useConfirm();
   const [catalog, setCatalog] = useState<Skill[]>([]);
   const [goals, setGoals] = useState<LearningGoal[]>([]);
   const [sessions, setSessions] = useState<LearningSession[]>([]);
@@ -197,7 +199,12 @@ const Learning = () => {
   };
 
   const handleCancelSession = async (session: LearningSession) => {
-    if (!window.confirm('Cancel this session? This cannot be undone.')) return;
+    if (!await confirm({
+      header: 'Cancel this session?',
+      message: 'This cannot be undone.',
+      confirmText: 'Cancel session',
+      destructive: true,
+    })) return;
     setRespondingSessionId(session.id);
     setError(null);
     setMessage(null);

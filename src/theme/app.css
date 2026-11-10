@@ -61,6 +61,31 @@ ion-card::part(native) {
   border-radius: inherit;
 }
 
+ion-alert.app-confirm-alert {
+  --backdrop-opacity: 0.55;
+}
+
+ion-alert.app-confirm-alert::part(container) {
+  border: 1px solid var(--sf-soft-border);
+  border-radius: 1.25rem;
+  background: var(--sf-surface);
+  box-shadow: 0 18px 50px rgba(20, 28, 54, 0.2);
+}
+
+ion-alert.app-confirm-alert::part(header) {
+  color: var(--ion-text-color);
+  font-weight: 750;
+}
+
+ion-alert.app-confirm-alert::part(message) {
+  color: var(--ion-color-medium-shade);
+  line-height: 1.5;
+}
+
+ion-alert.app-confirm-alert::part(button) {
+  font-weight: 700;
+}
+
 ion-card-header {
   padding: 1.1rem 1.15rem 0.6rem;
 }

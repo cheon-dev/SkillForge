@@ -29,6 +29,7 @@ import {
 import { addOutline } from 'ionicons/icons';
 import NotificationsButton from '../components/NotificationsButton';
 import { useAuth } from '../hooks/useAuth';
+import { useConfirm } from '../hooks/useConfirm';
 import {
   adminListQuizQuestions,
   adminListStudents,
@@ -93,6 +94,7 @@ const countByCourse = (rows: AdminStudentRow[]): { course: string; count: number
 
 const Admin = () => {
   const { user } = useAuth();
+  const confirm = useConfirm();
   const [role, setRole] = useState<string | null>(null);
   const [roleChecked, setRoleChecked] = useState(false);
   const [tab, setTab] = useState<Tab>('overview');
@@ -436,9 +438,14 @@ const Admin = () => {
                       {isAdmin && row.student_id !== user?.id && (
                         <IonButton
                           size="small" color="danger" fill="outline" disabled={saving}
-                          onClick={() => {
-                            if (window.confirm(`Delete ${row.full_name}? This removes their sessions, submissions and badges permanently.`)) {
-                              void run(() => deleteAdminStudent(row.student_id), `Deleted ${row.full_name}.`);
+                          onClick={async () => {
+                            if (await confirm({
+                              header: 'Delete this student?',
+                              message: `Delete ${row.full_name}? This removes their sessions, submissions and badges permanently.`,
+                              confirmText: 'Delete student',
+                              destructive: true,
+                            })) {
+                              await run(() => deleteAdminStudent(row.student_id), `Deleted ${row.full_name}.`);
                             }
                           }}
                         >
@@ -505,9 +512,14 @@ const Admin = () => {
                           fill="clear"
                           color="danger"
                           disabled={saving}
-                          onClick={() => {
-                            if (window.confirm(`Permanently delete ${report.target_name}? This cannot be undone.`)) {
-                              void run(
+                          onClick={async () => {
+                            if (await confirm({
+                              header: 'Permanently delete this account?',
+                              message: `Delete ${report.target_name}? This cannot be undone.`,
+                              confirmText: 'Delete account',
+                              destructive: true,
+                            })) {
+                              await run(
                                 () => deleteAdminStudent(report.target_user_id),
                                 `Deleted ${report.target_name}.`,
                               );
@@ -558,9 +570,14 @@ const Admin = () => {
                             });
                             openAdminModal('skill');
                           }}>Edit</IonButton>
-                          <IonButton size="small" fill="clear" color="danger" disabled={saving} onClick={() => {
-                            if (window.confirm(`Delete "${skill.name}"? Students who hold it keep the record, but it leaves the catalog.`)) {
-                              void run(() => deleteAdminSkill(skill.id), `Deleted ${skill.name}.`);
+                          <IonButton size="small" fill="clear" color="danger" disabled={saving} onClick={async () => {
+                            if (await confirm({
+                              header: 'Delete this skill?',
+                              message: `Delete "${skill.name}"? Students who hold it keep the record, but it leaves the catalog.`,
+                              confirmText: 'Delete skill',
+                              destructive: true,
+                            })) {
+                              await run(() => deleteAdminSkill(skill.id), `Deleted ${skill.name}.`);
                             }
                           }}>Delete</IonButton>
                         </div>
@@ -609,9 +626,14 @@ const Admin = () => {
                         });
                         openAdminModal('challenge');
                       }}>Edit</IonButton>
-                      <IonButton size="small" fill="clear" color="danger" disabled={saving} onClick={() => {
-                        if (window.confirm(`Delete "${challenge.title}"? Its submissions go with it.`)) {
-                          void run(() => deleteAdminChallenge(challenge.id), `Deleted ${challenge.title}.`);
+                      <IonButton size="small" fill="clear" color="danger" disabled={saving} onClick={async () => {
+                        if (await confirm({
+                          header: 'Delete this challenge?',
+                          message: `Delete "${challenge.title}"? Its submissions go with it.`,
+                          confirmText: 'Delete challenge',
+                          destructive: true,
+                        })) {
+                          await run(() => deleteAdminChallenge(challenge.id), `Deleted ${challenge.title}.`);
                         }
                       }}>Delete</IonButton>
                     </div>
@@ -662,9 +684,14 @@ const Admin = () => {
                         });
                         openAdminModal('achievement');
                       }}>Edit</IonButton>
-                      <IonButton size="small" fill="clear" color="danger" disabled={saving} onClick={() => {
-                        if (window.confirm(`Delete "${achievement.name}"? Awards already given are removed too.`)) {
-                          void run(() => deleteAdminAchievement(achievement.id), `Deleted ${achievement.name}.`);
+                      <IonButton size="small" fill="clear" color="danger" disabled={saving} onClick={async () => {
+                        if (await confirm({
+                          header: 'Delete this achievement?',
+                          message: `Delete "${achievement.name}"? Awards already given are removed too.`,
+                          confirmText: 'Delete achievement',
+                          destructive: true,
+                        })) {
+                          await run(() => deleteAdminAchievement(achievement.id), `Deleted ${achievement.name}.`);
                         }
                       }}>Delete</IonButton>
                     </div>

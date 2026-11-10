@@ -28,6 +28,7 @@ import { addOutline, chevronBackOutline, peopleOutline, ribbonOutline } from 'io
 import FormModal from '../components/FormModal';
 import NotificationsButton from '../components/NotificationsButton';
 import { useAuth } from '../hooks/useAuth';
+import { useConfirm } from '../hooks/useConfirm';
 import {
   addProjectFile,
   addProjectMember,
@@ -107,6 +108,7 @@ type CollaborationModal = 'create' | 'milestone' | 'task' | 'file' | null;
 const Collaboration = () => {
   const { user } = useAuth();
   const router = useIonRouter();
+  const confirm = useConfirm();
 
   const [projects, setProjects] = useState<ProjectSummary[]>([]);
   const [loading, setLoading] = useState(true);
@@ -598,11 +600,14 @@ const Collaboration = () => {
                       fill="outline"
                       color="danger"
                       disabled={busy}
-                      onClick={() => {
-                        if (!window.confirm(
-                          `Are you sure you want to leave "${detail.project.name}"? You will need another member to invite you back.`,
-                        )) return;
-                        void runAction(async () => {
+                      onClick={async () => {
+                        if (!await confirm({
+                          header: 'Leave this project?',
+                          message: `Are you sure you want to leave "${detail.project.name}"? You will need another member to invite you back.`,
+                          confirmText: 'Leave project',
+                          destructive: true,
+                        })) return;
+                        await runAction(async () => {
                           await removeProjectMember(detail.project.project_id, user!.id);
                           closeProject();
                         }, 'You left the project.');
