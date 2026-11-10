@@ -1,4 +1,4 @@
-package io.ionic.starter;
+package com.example.skillforge.debug;
 
 import com.getcapacitor.BridgeActivity;
 
